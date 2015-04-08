@@ -24,9 +24,7 @@ public class ObjectStream {
     public static int totalUsers=0;
     public static final int MAX_USER_NUM = 20;
     public static String[] userName = new String[MAX_USER_NUM];
-    public static FileOutputStream fos = null;
     public static ObjectOutputStream oos = null;
-    public static FileInputStream fis = null;
     public static ObjectInputStream ois = null;
     
     public static void initSaveSteam(){
@@ -43,10 +41,6 @@ public class ObjectStream {
     }
     
     
-    
-    public static void storeID(String name){
-        userName[totalUsers]=name;
-    }
     
     public static void saveID(String name){
         
@@ -84,6 +78,9 @@ public class ObjectStream {
         try{
             while(true){
                 userName[i]=(String) ois.readObject();
+                System.out.println(userName[i]);
+                i++;
+                totalUsers=i;
             }
         }catch(EOFException endOfFileException){
             
