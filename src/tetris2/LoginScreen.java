@@ -6,6 +6,7 @@
 package tetris2;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -198,6 +199,8 @@ public class LoginScreen extends javax.swing.JFrame {
             //Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(1);
         }
+        loadInfoFromFile();
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -208,14 +211,32 @@ public class LoginScreen extends javax.swing.JFrame {
     private static int logInState=0;
     private static String savedUserName;
     private static String savedPassword;
+    private static int savedScore;
+    private static Path fileLocation;
     //Custom method
     
+    private void loadInfoFromFile(){
+        ObjectStream.fileLoadStream(fileLocation);
+        ObjectStream.loadID();
+        savedUserName=ObjectStream.us.getUserName();
+        savedPassword=ObjectStream.us.getPassword();
+        ObjectStream.closeLoadStream();
+        jTextField1.setText(savedUserName);
+        jTextField1.setEditable(false);
+        jLabel3.setText("Type your password");
+        jTextField2.setVisible(true);
+        //jLabel5.setText("Password must include at least one numerical, special, and capital letter");
+        logInState=2;
+    }
     
     private void selectSaveFile() throws IOException{
         FileChooser application = new FileChooser();
-        application.setSize(400,400);
-        application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        application.setVisible(true);
+        //application.setSize(700,400);
+        //application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //application.setVisible(false);
+        fileLocation = application.savedFile;
+        String s = String.format("%s",application.savedFile);
+        //System.out.println(s);
     }
     
     private boolean matchPassword(String password){

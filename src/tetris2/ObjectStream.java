@@ -96,6 +96,15 @@ public class ObjectStream {
         }
     }
     
+    public static void fileLoadStream(Path path){
+        try{
+            ois = new ObjectInputStream(Files.newInputStream(path));
+        }catch(IOException ioException){
+            System.out.println("No Save File Exists");
+            System.exit(1);
+        }
+    }
+    
     public static void loadID(){
         try{
             us=(UserInfo)ois.readObject();

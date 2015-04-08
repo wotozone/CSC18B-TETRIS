@@ -22,12 +22,14 @@ import javax.swing.JTextArea;
  */
 public class FileChooser extends JFrame{
     
-    private final JTextArea outputArea;
+    //private final JTextArea outputArea;
+    
+    public Path savedFile;
     
     public FileChooser() throws IOException{
-        super("Select Save File");
-        outputArea = new JTextArea();
-        add(new JScrollPane(outputArea));
+        //super("Select Save File");
+        //outputArea = new JTextArea();
+        //add(new JScrollPane(outputArea));
         analyzePath();
     }
     
@@ -35,7 +37,14 @@ public class FileChooser extends JFrame{
         Path path = getFileOrDirectoryPath();
         
         if(path!=null&&Files.exists(path)){
+            //Path s = path.getFileName();
+            //System.out.println(String.format("%s", path));
+            savedFile=path;
             
+            
+            
+            /*
+            //Where FileChooser works
             StringBuilder builder = new StringBuilder();
             builder.append(String.format("%s:%n", path.getFileName()));
             builder.append(String.format("%s a directory%n", Files.isDirectory(path) ? "Is" : "Is not"));
@@ -44,7 +53,6 @@ public class FileChooser extends JFrame{
             builder.append(String.format("Size: %s%n", Files.size(path)));
             builder.append(String.format("Path: %s%n", path));
             builder.append(String.format("Absolute path: %s%n", path.toAbsolutePath()));
-            
             if(Files.isDirectory(path)){
                 builder.append(String.format("%nDirectory contents:%n"));
                 
@@ -56,9 +64,13 @@ public class FileChooser extends JFrame{
             }
             
             outputArea.setText(builder.toString());
+            */
+            
+            
         }else{
             JOptionPane.showMessageDialog(this, path.getFileName()+" does not exist.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
+            
     }
     
     private Path getFileOrDirectoryPath(){
