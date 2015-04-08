@@ -78,7 +78,7 @@ public class StartScreen extends JFrame{
             }
         }, 0, 1);
         */
-        blockDown.schedule(new TimerTask(){
+        blockDown.scheduleAtFixedRate(new TimerTask(){
             @Override
             public void run(){
                 /*

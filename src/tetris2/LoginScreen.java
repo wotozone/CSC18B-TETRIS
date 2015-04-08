@@ -82,20 +82,20 @@ public class LoginScreen extends javax.swing.JFrame {
                             .addComponent(jLabel4)
                             .addComponent(jLabel1))))
                 .addContainerGap(152, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(143, 143, 143))
             .addGroup(layout.createSequentialGroup()
                 .addGap(239, 239, 239)
                 .addComponent(jLabel2)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(143, 143, 143))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,13 +110,13 @@ public class LoginScreen extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(80, 80, 80)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48))
         );
@@ -136,22 +136,28 @@ public class LoginScreen extends javax.swing.JFrame {
                     savedUserName=name;
                     if(ObjectStream.initsaveStream(name)==true){
                         jTextField1.setEditable(false);
-                        jLabel3.setText("Type your password");
+                        jLabel4.setText("Type your password");
                         jTextField2.setVisible(true);
-                        jLabel4.setText("Password must include at least one numerical, special, and capital letter");
+                        jLabel3.setText("Password must include at least one numerical, special, and capital letter");
                         jButton1.setText("Create Account");
                         logInState=1;
                     }else{
                         jTextField1.setEditable(false);
                         jLabel3.setText("Type your password");
                         jTextField2.setVisible(true);
-                        //jLabel4.setText("Password must include at least one numerical, special, and capital letter");
+                        //jLabel5.setText("Password must include at least one numerical, special, and capital letter");
                         logInState=2;
+                        ObjectStream.initLoadStream(name);
+                        ObjectStream.loadID();
+                        savedPassword=ObjectStream.us.getPassword();
+                        ObjectStream.closeLoadStream();
                     }
+                    
                     //ObjectStream.saveID(s);
                     //ObjectStream.closeSaveStream();
                     //startGame();
                 }
+                break;
             case 1://to Create New Account
                 String password =jTextField2.getText();
                 if(checkPassword(password)==true){
@@ -159,15 +165,18 @@ public class LoginScreen extends javax.swing.JFrame {
                     ObjectStream.saveID(savedUserName,savedPassword,0);
                     ObjectStream.closeSaveStream();
                     startGame();
+                }else{
+                    jLabel5.setText("Your password is too weak");
                 }
+                break;
             case 2://to Log in
                 String password2 =jTextField2.getText();
-                if(checkPassword(password2)==true){
-                    savedPassword=password2;
-                    ObjectStream.saveID(savedUserName,savedPassword,0);
-                    ObjectStream.closeSaveStream();
+                if(matchPassword(password2)==true){
                     startGame();
+                }else{
+                    jLabel5.setText("Password is incorrect");
                 }
+                break;
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -181,9 +190,14 @@ public class LoginScreen extends javax.swing.JFrame {
     private static String savedPassword;
     //Custom method
     
+    public boolean matchPassword(String password){
+        if(password.equals(savedPassword))return true;
+        return false;
+    }
+    
     private boolean checkID(String name){
         if(RegularExpression.checkID(name)==false){
-            jLabel3.setText("Your Account might have incorrect letter or length");
+            jLabel4.setText("Your Account might have incorrect letter or length");
             return false;
         }
         return true;
@@ -191,7 +205,6 @@ public class LoginScreen extends javax.swing.JFrame {
     
     private boolean checkPassword(String password){
         if(RegularExpression.checkPassword(password)==false){
-            jLabel4.setText("Your password is too weak");
             return false;
         }
         return true;

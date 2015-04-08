@@ -14,13 +14,25 @@ import java.io.Serializable;
 public class UserInfo implements Serializable{
     
     private String userName;
-    private String passWord;
+    private String password;
     private int score;
     
-    public UserInfo(String userName,String passWord, int score){
+    public UserInfo(String userName,String password, int score){
         this.userName=userName;
-        this.passWord=passWord;
+        this.password=password;
         this.score=score;
+    }
+    
+    public String getUserName(){
+        return this.userName;
+    }
+    
+    public String getPassword(){
+        return this.password;
+    }
+    
+    public int getScore(){
+        return this.score;
     }
     
 }

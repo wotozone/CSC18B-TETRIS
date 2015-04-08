@@ -74,6 +74,7 @@ public class ObjectStream {
         }catch(IOException ioexception){
             
         }
+        us=null;
     }
     
     public static void closeSaveStream(){
@@ -88,14 +89,14 @@ public class ObjectStream {
     
     public static void initLoadStream(String name){
         try{
-            ois = new ObjectInputStream(Files.newInputStream(Paths.get(name+".dat"),APPEND));
+            ois = new ObjectInputStream(Files.newInputStream(Paths.get(name+".dat")));
         }catch(IOException ioException){
+            System.out.println("No Save File Exists");
             System.exit(1);
         }
     }
     
     public static void loadID(){
-        int i=0;
         try{
             us=(UserInfo)ois.readObject();
         }catch(EOFException endOfFileException){
@@ -108,6 +109,7 @@ public class ObjectStream {
     }
     
     public static void closeLoadStream(){
+        us=null;
         try{
             if(ois!=null)ois.close();
         }catch(IOException ioException){
