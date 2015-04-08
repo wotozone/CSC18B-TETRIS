@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import static java.nio.file.StandardOpenOption.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 /**
@@ -22,17 +24,30 @@ import java.util.Scanner;
 public class ObjectStream {
     
     public static int totalUsers=0;
-    public static final int MAX_USER_NUM = 20;
-    public static String[] userName = new String[MAX_USER_NUM];
+    public static UserInfo us;
     public static ObjectOutputStream oos = null;
     public static ObjectInputStream ois = null;
     
-    public static void initSaveSteam(){
-        
-        //store objects by using ObjectOutput
+    public static boolean initsaveStream(String name){
+        Path path = Paths.get(name+".dat");
+        if(Files.exists(path)&&isDummy(name)==false){
+            continueSaveStream(name);
+            return false;
+        }else{
+            createSaveStream(name);
+            return true;
+        }
+    }
+    
+    public static boolean isDummy(String name){
+        return false;
+    }
+    
+    public static void continueSaveStream(String name){
+        //Path path = Paths.get("Account.dat");
+        //if(Files.exists(path)){}
         try{
-            //fos = new FileOutputStream(Files.newOutputStream(Paths.get("Accounts.dat")));
-            oos = new ObjectOutputStream(Files.newOutputStream(Paths.get("Account.dat")));
+            oos = new ObjectOutputStream(Files.newOutputStream(Paths.get(name+".dat"),APPEND));
             
         }catch(IOException e){
             System.exit(1);
@@ -40,14 +55,20 @@ public class ObjectStream {
         
     }
     
-    
-    
-    public static void saveID(String name){
-        
-        Scanner input = new Scanner(System.in);
-        
+    private static void createSaveStream(String name){
         try{
-            oos.writeObject(name);
+            //fos = new FileOutputStream(Files.newOutputStream(Paths.get("Accounts.dat")));
+            oos = new ObjectOutputStream(Files.newOutputStream(Paths.get(name+".dat"),CREATE_NEW));
+            
+        }catch(IOException e){
+            System.exit(1);
+        }
+    }
+    
+    public static void saveID(String name, String password, int point){
+        us = new UserInfo(name,password,point);
+        try{
+            oos.writeObject(us);
         }catch(NoSuchElementException elementException){
             
         }catch(IOException ioexception){
@@ -65,9 +86,9 @@ public class ObjectStream {
         }
     }
     
-    public static void initLoadStream(){
+    public static void initLoadStream(String name){
         try{
-            ois = new ObjectInputStream(Files.newInputStream(Paths.get("Account.dat")));
+            ois = new ObjectInputStream(Files.newInputStream(Paths.get(name+".dat"),APPEND));
         }catch(IOException ioException){
             System.exit(1);
         }
@@ -76,12 +97,7 @@ public class ObjectStream {
     public static void loadID(){
         int i=0;
         try{
-            while(true){
-                userName[i]=(String) ois.readObject();
-                System.out.println(userName[i]);
-                i++;
-                totalUsers=i;
-            }
+            us=(UserInfo)ois.readObject();
         }catch(EOFException endOfFileException){
             
         }catch(ClassNotFoundException classNotFoundException){

@@ -25,15 +25,19 @@ public class RegularExpression {
         }else{System.out.println("it does not match :" + s);}
     }
     
-    public static void checkPassword(String s){
+    public static boolean checkPassword(String s){
         Pattern p = Pattern.compile("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20})");
         Matcher m = p.matcher(s);
-        String r="excellent";
+        //String r="excellent";
         if(m.matches()==true){
-            if(s.length()<10)r="poor";
-            else if(s.length()<15)r="good";
-        }else{r="unacceptable";}
-        System.out.println(r);
+            //if(s.length()<10)r="poor";
+            //else if(s.length()<15)r="good";
+            return true;
+        }else{
+            return false;
+            //r="unacceptable";
+        }
+        //System.out.println(r);
     }
     
     public static boolean checkID(String s){

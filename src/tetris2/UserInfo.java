@@ -17,10 +17,6 @@ public class UserInfo implements Serializable{
     private String passWord;
     private int score;
     
-    public UserInfo(){
-        this("","",0);
-    }
-    
     public UserInfo(String userName,String passWord, int score){
         this.userName=userName;
         this.passWord=passWord;
