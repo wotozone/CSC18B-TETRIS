@@ -5,6 +5,11 @@
  */
 package tetris2;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+
 /**
  *
  * @author minjikim
@@ -64,6 +69,11 @@ public class LoginScreen extends javax.swing.JFrame {
         jTextField2.setToolTipText("");
 
         jButton2.setText("Find file to get the ID");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText(" ");
 
@@ -180,6 +190,16 @@ public class LoginScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            // TODO add your handling code here:
+            selectSaveFile();
+        } catch (IOException ex) {
+            //Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(1);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -190,7 +210,15 @@ public class LoginScreen extends javax.swing.JFrame {
     private static String savedPassword;
     //Custom method
     
-    public boolean matchPassword(String password){
+    
+    private void selectSaveFile() throws IOException{
+        FileChooser application = new FileChooser();
+        application.setSize(400,400);
+        application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        application.setVisible(true);
+    }
+    
+    private boolean matchPassword(String password){
         if(password.equals(savedPassword))return true;
         return false;
     }
