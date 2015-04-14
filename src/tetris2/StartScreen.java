@@ -97,7 +97,7 @@ public class StartScreen extends JFrame{
                 }
                 repaint();
             }
-        }, 0, 100);
+        }, 0, 1000);
     }
     
     private void initBlocks(){
