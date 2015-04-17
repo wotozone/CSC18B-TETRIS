@@ -5,6 +5,7 @@
  */
 package tetris2;
 
+import blockShape.BlockManager;
 import imageRendering.ImageManager;
 import java.awt.*;
 import java.awt.event.*;
@@ -33,7 +34,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     
     private BufferedImage bi = null;
 
-    private boolean left = false, right = false, up = false, down = false;
+    private boolean left = false, right = false, down = false;
     private boolean start = false, end = false;
     
     private int moveDelay;
@@ -53,7 +54,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     start=true;
     end=false;
     
-    NextBlocks.setSpecificBlock(1, 0);
+    NextBlocks.setSpecificBlock(1, 1);
     BlockManager.bm.setNextBlockToDisplay();
     
     fps = new FPSManager();
@@ -145,12 +146,14 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                 right = true;      
                 break;
             case KeyEvent.VK_UP:   
-                up = true;       
+                BlockManager.bm.setBlockRotate();
                 break;
             case KeyEvent.VK_DOWN:   
                 down = true;      
                 break;
-           } 
+            case KeyEvent.VK_SPACE:
+                BlockManager.bm.setQuickDown();
+            } 
    }
 
     public void keyReleased(KeyEvent ke){
@@ -161,9 +164,6 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                 break;
             case KeyEvent.VK_RIGHT: 
                 right = false; 
-                break;
-            case KeyEvent.VK_UP:  
-                up = false;  
                 break;
             case KeyEvent.VK_DOWN:
                 down = false;  
