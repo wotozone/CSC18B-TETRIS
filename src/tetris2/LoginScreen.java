@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import tetris2.threads.DropDownThread;
 
 /**
  *
@@ -298,7 +299,12 @@ public class LoginScreen extends javax.swing.JFrame {
     private void startGame(){
         this.setVisible(false);
         //new StartScreen().setVisible(true);
-        new MainCanvas();
+        //new MainCanvas();
+        new Initializer();
+        Thread t = new Thread(new Testing());
+        t.start();
+        Thread d = new Thread(new DropDownThread());
+        d.start();
     }
     
     public static void main(String args[]) {

@@ -3,18 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tetris2;
+package tetris2.threads;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import tetris2.BlockManager;
 
 /**
  *
- * @author minjikim
+ * @author Tae
  */
-public class ActionActivator extends KeyAdapter {
+public class KeyActivatingThread extends Thread implements KeyListener {
     
+    public KeyActivatingThread(){
+        
+    }
+    
+    public void run(){
+        while(true){
+            
+        }
+    }
+
     public static boolean pressLeft=false;
     public static boolean pressRight=false;
     public static boolean pressUp=false;

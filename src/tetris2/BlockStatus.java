@@ -14,6 +14,8 @@ public class BlockStatus {
     private int blockColor=0;
     private boolean isBlock=false;
     
+    public static BlockStatus[][] blocks = new BlockStatus[10][20];
+    
     public void setBlockColor(int colorNum){
         blockColor=colorNum;
         if(isBlock==false)isBlock=true;

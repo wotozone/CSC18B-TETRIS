@@ -18,7 +18,7 @@ public class ColorManager extends Color{
     
     final static Color FOREGROUND = new Color(255,0,50);
     
-    final static Color NEXTBOX = new Color(200,200,200);
+    public final static Color NEXTBOX = new Color(200,200,200);
     
     final static Color BOXLINES = new Color(100,100,100);
     

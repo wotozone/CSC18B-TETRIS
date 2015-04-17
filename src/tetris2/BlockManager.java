@@ -127,8 +127,8 @@ public class BlockManager {
     }
     
     private boolean checkBlockDuplicates(int xAxis,int yAxis, int color,boolean empty){
-        if(MainCanvas.blocks[xAxis][yAxis].getBlockColor()!=7&&empty==false)return true;
-        MainCanvas.blocks[xAxis][yAxis].setBlockColor(color);
+        if(BlockStatus.blocks[xAxis][yAxis].getBlockColor()!=7&&empty==false)return true;
+        BlockStatus.blocks[xAxis][yAxis].setBlockColor(color);
         return false;
     }
     

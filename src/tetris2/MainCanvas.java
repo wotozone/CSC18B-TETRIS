@@ -5,6 +5,8 @@
  */
 package tetris2;
 
+import tetris2.threads.*;
+import imageRendering.ImageManager;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,15 +15,16 @@ import java.awt.image.BufferStrategy;
 import static java.lang.Thread.sleep;
 import javax.swing.JFrame;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.*;
-import ImageRender.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
  *
  * @author Tae
  */
-public class MainCanvas {
+public class MainCanvas implements KeyListener {
     
     //System Class
     public JFrame frame;
@@ -30,6 +33,7 @@ public class MainCanvas {
     
     //Custom Class
     public DropDownThread dropDownThread;
+    public KeyActivatingThread keyActThread;
     public ImageManager imageManager;
     public FPSManager fps;
 
@@ -57,6 +61,8 @@ public class MainCanvas {
             canvas = new Canvas();
             canvas.setBackground(Color.WHITE);
             canvas.setPreferredSize(new Dimension(700, 800));
+            canvas.addKeyListener(new ActionActivator());
+            System.out.println("SFD");
             frame.add(canvas);
             
 
@@ -84,14 +90,16 @@ public class MainCanvas {
             initBlocks();
 
             //addKeyListener
-            frame.addKeyListener(new ActionActivator());
+            
 
             //StartGame
             initGame();
             
-            //setUp
+            //Threads
             dropDownThread = new DropDownThread();
             dropDownThread.start();
+            keyActThread = new KeyActivatingThread();
+            keyActThread.start();
             
             /*
             ####################################################################
@@ -132,6 +140,11 @@ public class MainCanvas {
                 
                 //Backup
                 if(!buffStg.contentsLost())buffStg.show();//To prevent if image is not fully loaded
+                try {
+                    sleep(10);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MainCanvas.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
     }
 
@@ -155,6 +168,30 @@ public class MainCanvas {
             }
         }
         NextBlocks.initBlocks();
+    }
+
+    
+    @Override
+    public void keyPressed(KeyEvent e){
+        switch(e.getKeyCode()){
+            case KeyEvent.VK_LEFT:
+                System.out.println("left");
+                break;
+            case KeyEvent.VK_RIGHT:
+                break;
+            case KeyEvent.VK_UP:
+                break;
+            case KeyEvent.VK_DOWN:
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e){
+    }
+    
+    @Override
+    public void keyTyped(KeyEvent e){
     }
     
     
