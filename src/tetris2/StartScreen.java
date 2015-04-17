@@ -59,7 +59,7 @@ public class StartScreen extends JFrame{
     
     private void initGame(){
         NextBlocks.setSpecificBlock(1, 0);
-        BlockManager.setNextBlockToDisplay();
+        BlockManager.bm.setNextBlockToDisplay();
     }
     
     private void initTimer(){
@@ -92,7 +92,7 @@ public class StartScreen extends JFrame{
                 */
                 decasec++;
                 if(decasec==10){
-                    BlockManager.setBlockMoveDown();
+                    BlockManager.bm.setBlockMoveDown();
                     decasec=0;
                 }
                 repaint();

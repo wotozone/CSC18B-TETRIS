@@ -18,25 +18,25 @@ public class BlockStatus {
     
     public void setBlockColor(int colorNum){
         blockColor=colorNum;
-        if(isBlock==false)isBlock=true;
+        //if(isBlock==false)isBlock=true;
         if(colorNum==7)setBlockEmpty();
+    }
+    
+    public void setFixedBlock(){
+        isBlock=true;
     }
     
     public void setBlockEmpty(){
         blockColor=7;
-        if(isBlock==true)isBlock=false;
+        isBlock=false;
     }
     
     public int getBlockColor(){
         return blockColor;
     }
     
-    public boolean isBlockEmpty(){
-        if(isBlock==true){
-            return false;
-        }else{
-            return true;
-        }
+    public boolean isBlockPlaced(){
+        return isBlock;
     }
     
 }

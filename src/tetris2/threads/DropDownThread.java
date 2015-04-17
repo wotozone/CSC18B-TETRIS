@@ -20,13 +20,12 @@ public class DropDownThread extends Thread {
     
     public void run(){
         while(true){
-            BlockManager.setBlockMoveDown();
             try{
                 sleep(1000);
             } catch (InterruptedException e){
                 e.printStackTrace();
             }
-            
+            BlockManager.bm.setBlockMoveDown();
         }
     }
     

@@ -150,7 +150,7 @@ public class MainCanvas implements KeyListener {
 
     private void initGame(){
         NextBlocks.setSpecificBlock(1, 0);
-        BlockManager.setNextBlockToDisplay();
+        BlockManager.bm.setNextBlockToDisplay();
         fps = new FPSManager();
         try {
             imageManager = new ImageManager();

@@ -12,68 +12,151 @@ package tetris2;
 public class BlockManager {
     
     //initClass
-    private static BlockManager blockManager = new BlockManager();
+    public static BlockManager bm = new BlockManager();
     
     //CurrentBlock
-    public static int currentBlock=0;
-    public static int posMoved=0;
+    public int currentBlock=0;
+    public int direction=0;
     
     //RotationOfBlock
     public int rotate=0;
     
     //RotationAxis
-    public int[] rAxis= new int[2];
+    public int[] xAxis= new int[4];
+    public int[] yAxis= new int[4];
+    
+    public int rAxis;
     
     //BlockInfo.
+    public int[] blocks= new int[4];
     
-    public static void setNextBlockToDisplay(){
+    //RemainBlocks
+    
+    public void setNextBlockToDisplay(){
         currentBlock=NextBlocks.getNextBlock();
         NextBlocks.setNextRandomBlock();
-        blockManager.setInitBlockShape(currentBlock);
+        setInitBlockShape(currentBlock);
     }
     
-    public static void setBlockMoveDown(){
-        posMoved=0;
-        blockManager.setNextBlockShape(0,currentBlock);
+    public void setBlockMoveDown(){
+        setBlockMove(0);
     }
     
-    public static void setBlockRotate(){
+    public void setBlockRotate(){
         
     }
     
-    public static void setBlockMove(int direction){
+    public void setBlockMove(int direction){
+        this.direction=direction;
         switch(direction){
-            case 0: posMoved=0;
-                    blockManager.setNextBlockShape(0, currentBlock);
-                    break;
-            case 1: posMoved=1;
-                    blockManager.setNextBlockShape(1, currentBlock);
-                    break;
-            case 2: posMoved=2;
-                    blockManager.setNextBlockShape(2, currentBlock);
-                    break;
+            case 0:
+                moveBlock();
+                break;
+            case 1: 
+                moveBlock();
+                break;
+            case 2: 
+                moveBlock();
+                break;
         }
     }
     
-    public void setInitBlockShape(int shapeNum){
+    private void setInitBlockShape(int shapeNum){
         rotate=0;
         switch(shapeNum){
             case 0:
-                rAxis[0]=4;
-                rAxis[1]=1;
-                setStickShape(0,false);
+                initStickBlock();
+                break;
         }
     }
     
-    public void setNextBlockShape(int direction, int shapeNum){
-        setStickShape(7,true);
-        setNewAxisPoint(direction,false);
-        switch(shapeNum){
-            case 0:
-                setStickShape(0,false);
+    private void moveBlock(){
+        //checkPath
+        switch(checkPath()){
+            case 0://moveBlocks
+                resetPath();
+                movePath();
+                break;
+            case 1://fixBlocks
+                fixPath();
+                break;
+        }
+        
+    }
+    
+    private void fixPath(){
+        for(int i=0;i<4;i++){
+            BlockStatus.blocks[xAxis[i]][yAxis[i]].setFixedBlock();
         }
     }
     
+    private void resetPath(){
+        for(int i=0;i<4;i++){
+            BlockStatus.blocks[xAxis[i]][yAxis[i]].setBlockEmpty();
+        }
+    }
+    
+    private void movePath(){
+        for(int i=0;i<4;i++){
+            switch(direction){
+                case 0://down
+                    yAxis[i]++;
+                    break;
+                case 1://left
+                    xAxis[i]--;
+                    break;
+                case 2://right
+                    xAxis[i]++;
+                    break;
+            }
+            BlockStatus.blocks[xAxis[i]][yAxis[i]].setBlockColor(currentBlock);
+        }
+    }
+    
+    private int checkPath(){
+        for(int i=0;i<4;i++){
+            switch(direction){
+                case 0://down
+                    if(yAxis[i]+1<Initializer.BLOCK_NUM_HEIGHT){
+                        if(BlockStatus.blocks[xAxis[i]][yAxis[i]+1].isBlockPlaced()==true)System.out.println("stuck");
+                        if(BlockStatus.blocks[xAxis[i]][yAxis[i]+1].isBlockPlaced()==true)return 1;//block is stuck
+                    }else{
+                        return 1;
+                    }
+                    break;
+                case 1://left
+                    //if(BlockStatus.blocks[xAxis[i]-1][yAxis[i]].isBlockPlaced()==true)return 2;
+                    if(xAxis[i]-1<0)return 2;
+                    //cannot move to that pathway
+                    break;
+                case 2://right
+                    //if(BlockStatus.blocks[xAxis[i]+1][yAxis[i]].isBlockPlaced()==true)return 2;
+                    System.out.println(xAxis[i]+1);
+                    if(xAxis[i]+1>=Initializer.BLOCK_NUM_WIDTH)return 2;
+                    break;
+            }
+        }
+        return 0;//can move
+    }
+    
+    private void initStickBlock(){
+        //rotateAxis
+        rAxis=1;
+        //initAxis
+        xAxis[0]=4;
+        yAxis[0]=0;
+        xAxis[1]=4;
+        yAxis[1]=1;
+        xAxis[2]=4;
+        yAxis[2]=2;
+        xAxis[3]=4;
+        yAxis[3]=3;
+        for(int i=0;i<4;i++){
+            BlockStatus.blocks[xAxis[i]][yAxis[i]].setBlockColor(currentBlock);
+        }
+    }
+    
+    /*
     public void setNewAxisPoint(int direction,boolean undo){
         if(direction==0){
             if(undo==false){
@@ -117,7 +200,7 @@ public class BlockManager {
     }
     
     private void checkBorder(int pos, int xMin, int xMax, int yMin, int yMax){
-        if(xMin<0||xMax>=StartScreen.BLOCK_NUM_WIDTH||yMin<0||yMax>=StartScreen.BLOCK_NUM_HEIGHT){
+        if(xMin<0||xMax>=Testing.BLOCK_NUM_WIDTH||yMin<0||yMax>=Testing.BLOCK_NUM_HEIGHT){
             setNewAxisPoint(pos,true);
         }
     }
@@ -136,5 +219,6 @@ public class BlockManager {
         if(remove==true)return 7;
         return colorNum;
     }
+    */
     
 }

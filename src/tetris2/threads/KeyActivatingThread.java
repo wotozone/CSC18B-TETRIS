@@ -37,18 +37,18 @@ public class KeyActivatingThread extends Thread implements KeyListener {
         switch(e.getKeyCode()){
             case KeyEvent.VK_LEFT:
                 System.out.println("left");
-                BlockManager.setBlockMove(1);
+                BlockManager.bm.setBlockMove(1);
                 pressLeft=true;
                 break;
             case KeyEvent.VK_RIGHT:
-                BlockManager.setBlockMove(2);
+                BlockManager.bm.setBlockMove(2);
                 pressRight=true;
                 break;
             case KeyEvent.VK_UP:
                 pressUp=true;
                 break;
             case KeyEvent.VK_DOWN:
-                BlockManager.setBlockMove(0);
+                BlockManager.bm.setBlockMove(0);
                 pressDown=true;
                 break;
         }
@@ -78,15 +78,15 @@ public class KeyActivatingThread extends Thread implements KeyListener {
         switch(e.getKeyCode()){
             case KeyEvent.VK_LEFT:
                 System.out.println("left");
-                BlockManager.setBlockMove(1);
+                BlockManager.bm.setBlockMove(1);
                 break;
             case KeyEvent.VK_RIGHT:
-                BlockManager.setBlockMove(2);
+                BlockManager.bm.setBlockMove(2);
                 break;
             case KeyEvent.VK_UP:
                 break;
             case KeyEvent.VK_DOWN:
-                BlockManager.setBlockMove(0);
+                BlockManager.bm.setBlockMove(0);
                 break;
         }
     }
