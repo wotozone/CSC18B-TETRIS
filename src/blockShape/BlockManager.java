@@ -28,6 +28,7 @@ public class BlockManager {
     //CurrentBlock
     public int currentBlock=0;
     public int direction=0;
+    public boolean fixed=false;
     
     //RotationOfBlock
     public int rotate=0;
@@ -44,6 +45,7 @@ public class BlockManager {
     //RemainBlocks
     
     public void setNextBlockToDisplay(){
+        System.out.println("sdfsdf");
         currentBlock=NextBlocks.getNextBlock();
         NextBlocks.setNextRandomBlock();
         initAxis();//Just in case
@@ -51,58 +53,64 @@ public class BlockManager {
     }
     
     public void setBlockMoveDown(){
-        setBlockMove(0);
+        if(!fixed){
+            setBlockMove(0);
+        }
     }
     
     public void setQuickDown(){
-        this.direction=0;
-        quickDown();
+        if(!fixed){
+            this.direction=0;
+            quickDown();
+        }
     }
     
     public void setBlockRotate(){
-        switch(currentBlock){
-            case 0://stick
-                resetPath();
-                if(stick.isRotatable()==0)stick.rotateBlock();
-                updatePath();
-                break;
-                //checkRotatable(stick);
-            case 1://L
-                resetPath();
-                if(letterL.isRotatable()==0)letterL.rotateBlock();
-                updatePath();
-                break;
-                //checkRotatable(letterL);
-            case 2://inverseL
-                resetPath();
-                if(inverseL.isRotatable()==0)inverseL.rotateBlock();
-                updatePath();
-                break;
-                //checkRotatable(inverseL);
-            case 3://Z
-                resetPath();
-                if(letterZ.isRotatable()==0)letterZ.rotateBlock();
-                updatePath();
-                break;
-                //checkRotatable(letterZ);
-            case 4://inverseZ
-                resetPath();
-                if(inverseZ.isRotatable()==0)inverseZ.rotateBlock();
-                updatePath();
-                break;
-                //checkRotatable(inverseZ);
-            case 5://square
-                resetPath();
-                if(square.isRotatable()==0)square.rotateBlock();
-                updatePath();
-                break;
-                //checkRotatable(square);
-            case 6://letterT
-                resetPath();
-                if(letterT.isRotatable()==0)letterT.rotateBlock();
-                updatePath();
-                break;
-                //checkRotatable(letterT);
+        if(!fixed){
+            switch(currentBlock){
+                case 0://stick
+                    resetPath();
+                    if(stick.isRotatable()==0)stick.rotateBlock();
+                    updatePath();
+                    break;
+                    //checkRotatable(stick);
+                case 1://L
+                    resetPath();
+                    if(letterL.isRotatable()==0)letterL.rotateBlock();
+                    updatePath();
+                    break;
+                    //checkRotatable(letterL);
+                case 2://inverseL
+                    resetPath();
+                    if(inverseL.isRotatable()==0)inverseL.rotateBlock();
+                    updatePath();
+                    break;
+                    //checkRotatable(inverseL);
+                case 3://Z
+                    resetPath();
+                    if(letterZ.isRotatable()==0)letterZ.rotateBlock();
+                    updatePath();
+                    break;
+                    //checkRotatable(letterZ);
+                case 4://inverseZ
+                    resetPath();
+                    if(inverseZ.isRotatable()==0)inverseZ.rotateBlock();
+                    updatePath();
+                    break;
+                    //checkRotatable(inverseZ);
+                case 5://square
+                    resetPath();
+                    if(square.isRotatable()==0)square.rotateBlock();
+                    updatePath();
+                    break;
+                    //checkRotatable(square);
+                case 6://letterT
+                    resetPath();
+                    if(letterT.isRotatable()==0)letterT.rotateBlock();
+                    updatePath();
+                    break;
+                    //checkRotatable(letterT);
+            }
         }
     }
     
@@ -114,17 +122,19 @@ public class BlockManager {
     }
     
     public void setBlockMove(int direction){
-        this.direction=direction;
-        switch(direction){
-            case 0://down
-                moveBlock();
-                break;
-            case 1://left
-                moveBlock();
-                break;
-            case 2://right
-                moveBlock();
-                break;
+        if(!fixed){
+            this.direction=direction;
+            switch(direction){
+                case 0://down
+                    moveBlock();
+                    break;
+                case 1://left
+                    moveBlock();
+                    break;
+                case 2://right
+                    moveBlock();
+                    break;
+            }
         }
     }
     
@@ -133,6 +143,7 @@ public class BlockManager {
             xAxis[i]=0;
             yAxis[i]=0;
         }
+        fixed=false;
     }
     
     private void quickDown(){
@@ -187,15 +198,53 @@ public class BlockManager {
                 break;
             case 1://fixBlocks
                 fixPath();
+                loadNextBlock();
                 break;
         }
         
+    }
+    
+    private void loadNextBlock(){
+        isBlockFilled();
+        setNextBlockToDisplay();
+    }
+    
+    private void isBlockFilled(){
+        boolean filled=false;
+        int k=Initializer.BLOCK_NUM_HEIGHT;//maximum height
+        for(int i=0;i<k;i++){
+            filled=true;
+            for(int j=0;j<Initializer.BLOCK_NUM_WIDTH;j++){
+                if(BlockStatus.blocks[j][i].isBlockPlaced()==false){
+                    filled=false;
+                    break;
+                }
+            }
+            if(filled){
+                breakBlock(i);
+                //i--;
+                //k--;
+            }
+        }
+    }
+    
+    private void breakBlock(int column){
+        for(int j=0;j<Initializer.BLOCK_NUM_WIDTH;j++){
+            BlockStatus.blocks[j][column].setBlockEmpty();
+            BlockStatus.blocks[j][0].setBlockEmpty();
+        }
+        for(int i=column;i>0;i--){
+            for(int j=0;j<Initializer.BLOCK_NUM_WIDTH;j++){
+                BlockStatus.blocks[j][i].setBlockColorWithPath(BlockStatus.blocks[j][i-1].getBlockColor());
+            }
+        }
     }
     
     private void fixPath(){
         for(int i=0;i<4;i++){
             BlockStatus.blocks[xAxis[i]][yAxis[i]].setFixedBlock();
         }
+        //fixed=true;
     }
     
     private void resetPath(){
@@ -241,13 +290,21 @@ public class BlockManager {
                 case 1://left
                     //if(BlockStatus.blocks[xAxis[i]-1][yAxis[i]].isBlockPlaced()==true)return 2;
                     if(xAxis[i]-1<0)System.out.println("cannot move left");
-                    if(xAxis[i]-1<0)return 2;
+                    if(xAxis[i]-1>=0){
+                        if(BlockStatus.blocks[xAxis[i]-1][yAxis[i]].isBlockPlaced()==true)return 1;//block is stuck
+                    }else{
+                        return 2;
+                    }
                     //cannot move to that pathway
                     break;
                 case 2://right
                     //if(BlockStatus.blocks[xAxis[i]+1][yAxis[i]].isBlockPlaced()==true)return 2;
                     if(xAxis[i]+1>=Initializer.BLOCK_NUM_WIDTH)System.out.println("cannot move right");
-                    if(xAxis[i]+1>=Initializer.BLOCK_NUM_WIDTH)return 2;
+                    if(xAxis[i]+1<Initializer.BLOCK_NUM_WIDTH){
+                        if(BlockStatus.blocks[xAxis[i]+1][yAxis[i]].isBlockPlaced()==true)return 1;//block is stuck
+                    }else{
+                        return 2;
+                    }
                     break;
                 case 3://rotation
                     if(yAxis[i]+1<Initializer.BLOCK_NUM_HEIGHT){

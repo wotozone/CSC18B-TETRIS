@@ -46,7 +46,7 @@ public class Initializer {
         for(int i=0;i<BLOCK_NUM_HEIGHT;i++){
             for(int k=0;k<BLOCK_NUM_WIDTH;k++){
                 BlockStatus.blocks[k][i] = new BlockStatus();
-                BlockStatus.blocks[k][i].setBlockColor(0);
+                BlockStatus.blocks[k][i].setBlockColor(7);
                 BlockStatus.blocks[k][i].setBlockEmpty();
             }
         }

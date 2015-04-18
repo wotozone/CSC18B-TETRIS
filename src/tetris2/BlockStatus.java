@@ -22,6 +22,16 @@ public class BlockStatus {
         if(colorNum==7)setBlockEmpty();
     }
     
+    public void setBlockColorWithPath(int colorNum){
+        //if(isBlock==false)isBlock=true;
+        if(colorNum==7){
+            setBlockEmpty();
+        }else{
+            blockColor=colorNum;
+            isBlock=true;
+        }
+    }
+    
     public void setFixedBlock(){
         isBlock=true;
     }

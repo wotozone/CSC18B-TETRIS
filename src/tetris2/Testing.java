@@ -38,6 +38,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     private boolean start = false, end = false;
     
     private int moveDelay;
+    private int dropDelay;
 
 
   public Testing() {
@@ -54,7 +55,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     start=true;
     end=false;
     
-    NextBlocks.setSpecificBlock(1, 6);
+    //NextBlocks.setSpecificBlock(1, 6);
     BlockManager.bm.setNextBlockToDisplay();
     
     fps = new FPSManager();
@@ -71,16 +72,17 @@ public class Testing extends JFrame implements Runnable, KeyListener{
 
         
         moveDelay = 0;
+        dropDelay = 0;
 
         while(true) {
 
-            Thread.sleep(10);//optimizing fps
+            //Thread.sleep(1);//optimizing fps
 
             if(start) {
                 if(moveDelay>=100){//move per 0.1sec
                     keyControl();
                 }else{
-                    moveDelay+=10;
+                    moveDelay+=2;
                 }
             }
             draw();

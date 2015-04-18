@@ -19,13 +19,19 @@ public class DropDownThread extends Thread {
     
     
     public void run(){
+        int delay=0;
         while(true){
             try{
-                sleep(1000);
+                sleep(10);
+                if(delay>=100){
+                    BlockManager.bm.setBlockMoveDown();
+                    delay=0;
+                }else{
+                    delay++;
+                }
             } catch (InterruptedException e){
                 e.printStackTrace();
             }
-            BlockManager.bm.setBlockMoveDown();
         }
     }
     

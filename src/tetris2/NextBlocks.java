@@ -22,11 +22,11 @@ public class NextBlocks {
     private static Random ran = new Random();
     
     public static void initBlocks(){
-        firstBlock= ran.nextInt(6);
-        secondBlock= ran.nextInt(6);
-        thirdBlock= ran.nextInt(6);
-        fourthBlock= ran.nextInt(6);
-        fifthBlock= ran.nextInt(6);
+        firstBlock= ran.nextInt(7);
+        secondBlock= ran.nextInt(7);
+        thirdBlock= ran.nextInt(7);
+        fourthBlock= ran.nextInt(7);
+        fifthBlock= ran.nextInt(7);
     }
     
     public static void setNextRandomBlock(){
@@ -34,7 +34,7 @@ public class NextBlocks {
         secondBlock= thirdBlock;
         thirdBlock= fourthBlock;
         fourthBlock= fifthBlock;
-        fifthBlock= ran.nextInt(6);
+        fifthBlock= ran.nextInt(7);
     }
     
     public static void setSpecificBlock(int place, int blocknum){
