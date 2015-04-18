@@ -5,7 +5,7 @@
  */
 package tetris2.threads;
 
-import tetris2.BlockManager;
+import blockShape.BlockManager;
 
 /**
  *

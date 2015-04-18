@@ -5,6 +5,7 @@
  */
 package tetris2;
 
+import blockShape.BlockManager;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

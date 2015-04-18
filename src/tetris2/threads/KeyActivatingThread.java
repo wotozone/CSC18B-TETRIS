@@ -7,7 +7,7 @@ package tetris2.threads;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import tetris2.BlockManager;
+import blockShape.BlockManager;
 
 /**
  *

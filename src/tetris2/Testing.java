@@ -54,7 +54,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     start=true;
     end=false;
     
-    NextBlocks.setSpecificBlock(1, 1);
+    NextBlocks.setSpecificBlock(1, 6);
     BlockManager.bm.setNextBlockToDisplay();
     
     fps = new FPSManager();

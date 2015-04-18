@@ -5,6 +5,7 @@
  */
 package tetris2;
 
+import blockShape.BlockManager;
 import tetris2.threads.*;
 import imageRendering.ImageManager;
 import java.awt.Canvas;
