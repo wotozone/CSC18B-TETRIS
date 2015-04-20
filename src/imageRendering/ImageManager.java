@@ -42,5 +42,9 @@ public class ImageManager{
         return imageLoader.OUTSIDE_FRAME;
     }
     
+    public BufferedImage getGameOverImage(){
+        return imageLoader.GAME_OVER;
+    }
+    
     
 }

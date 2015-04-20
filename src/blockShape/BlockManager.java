@@ -45,11 +45,13 @@ public class BlockManager {
     //RemainBlocks
     
     public void setNextBlockToDisplay(){
-        System.out.println("sdfsdf");
-        currentBlock=NextBlocks.getNextBlock();
-        NextBlocks.setNextRandomBlock();
-        initAxis();//Just in case
-        setInitBlockShape(currentBlock);
+        if(Initializer.start){
+            currentBlock=NextBlocks.getNextBlock();
+            NextBlocks.setNextRandomBlock();
+            initAxis();//Just in case
+            setInitBlockShape(currentBlock);
+            isGameOver();
+        }
     }
     
     public void setBlockMoveDown(){
@@ -135,6 +137,13 @@ public class BlockManager {
                     moveBlock();
                     break;
             }
+        }
+    }
+    
+    private void isGameOver(){
+        if(!checkInitPath()){//game over
+            Initializer.start=false;
+            Initializer.end=true;
         }
     }
     
@@ -316,9 +325,21 @@ public class BlockManager {
                         return 1;
                     }
                     break;
+                case 4://currentPlace
+                    if(BlockStatus.blocks[xAxis[i]][yAxis[i]].isBlockPlaced()==true)System.out.println("stuck: "+xAxis[i]+"/"+(yAxis[i]+1));
+                    if(BlockStatus.blocks[xAxis[i]][yAxis[i]].isBlockPlaced()==true)return 1;//block is stuck
+                    break;
             }
         }
         return 0;//can move
+    }
+    
+    private boolean checkInitPath(){
+        for(int i=0;i<4;i++){
+            if(BlockStatus.blocks[xAxis[i]][yAxis[i]].isBlockPlaced()==true)System.out.println("stuck at startline: "+xAxis[i]+"/"+(yAxis[i]+1));
+            if(BlockStatus.blocks[xAxis[i]][yAxis[i]].isBlockPlaced()==true)return false;//block is stuck
+        }
+        return true;//can move
     }
     
     

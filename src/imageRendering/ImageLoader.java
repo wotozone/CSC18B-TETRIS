@@ -15,8 +15,14 @@ import javax.imageio.ImageIO;
  */
 public class ImageLoader{
     
+    //FRAMES&BACKGROUNDS
     public final BufferedImage BACKGROUND;
     public final BufferedImage OUTSIDE_FRAME;
+    
+    //INTERFACES
+    public final BufferedImage GAME_OVER;
+    
+    //BLOCKS
     public final BufferedImage RED_BLOCK;
     public final BufferedImage ORANGE_BLOCK;
     public final BufferedImage YELLOW_BLOCK;
@@ -26,6 +32,7 @@ public class ImageLoader{
     public final BufferedImage PURPLE_BLOCK;
     public final BufferedImage ERROR_BLOCK;
     public final BufferedImage EMPTY_BLOCK;
+    
     
     public ImageLoader() throws Exception{
         //FRAMES
@@ -42,6 +49,10 @@ public class ImageLoader{
         PURPLE_BLOCK = ImageIO.read(new FileInputStream("Images/PURPLEBLOCK.jpg"));
         ERROR_BLOCK = ImageIO.read(new FileInputStream("Images/ERRORBLOCK.jpg"));
         EMPTY_BLOCK = ImageIO.read(new FileInputStream("Images/EMPTYBLOCK.jpg"));
+        
+        //INTERFACES
+        GAME_OVER = ImageIO.read(new FileInputStream("Images/GAMEOVER.png"));
+        
         /*
         BACKGROUND = ImageIO.read(new FileInputStream("Images/BACKGROUND.jpg"));
         RED_BLOCK = ImageIO.read(new FileInputStream("Images/RED_BLOCK.jpg"));

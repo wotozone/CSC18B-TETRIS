@@ -33,6 +33,9 @@ public class Initializer {
     public static final int WINDOW_WIDTH=700;
     public static final int WINDOW_HEIGHT=800;
     
+    public static boolean start = false;
+    public static boolean end = false;
+    
     public Initializer(){
         initBlocks();
         //frame = new JFrame("TETRIS");

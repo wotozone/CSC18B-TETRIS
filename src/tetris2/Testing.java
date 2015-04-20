@@ -35,7 +35,6 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     private BufferedImage bi = null;
 
     private boolean left = false, right = false, down = false;
-    private boolean start = false, end = false;
     
     private int moveDelay;
     private int dropDelay;
@@ -51,9 +50,10 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     this.setResizable(false);  
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setVisible(true);  
+    this.setLocationRelativeTo(null);
     
-    start=true;
-    end=false;
+    Initializer.start=true;
+    Initializer.end=false;
     
     //NextBlocks.setSpecificBlock(1, 6);
     BlockManager.bm.setNextBlockToDisplay();
@@ -78,7 +78,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
 
             //Thread.sleep(1);//optimizing fps
 
-            if(start) {
+            if(Initializer.start) {
                 if(moveDelay>=100){//move per 0.1sec
                     keyControl();
                 }else{
@@ -120,6 +120,12 @@ public class Testing extends JFrame implements Runnable, KeyListener{
             gs.fillRect(400, 75+(i*120), 100, 100);
         }
         
+        //When Game has ended
+        if(Initializer.end){
+            //gs.setColor(Color.WHITE);
+            //gs.drawString("GAME OVER", 25+(35*4), 75+(35*10));//Show GAME OVER
+            gs.drawImage(imageManager.getGameOverImage(), 25, 425, this);
+        }
         
         Graphics ge = this.getGraphics();
 
