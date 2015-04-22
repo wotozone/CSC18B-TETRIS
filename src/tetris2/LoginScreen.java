@@ -296,7 +296,8 @@ public class LoginScreen extends javax.swing.JFrame {
     }
     
     private void startGame(){
-        this.setVisible(false);
+        this.dispose();
+        //this.setVisible(false);
         //new StartScreen().setVisible(true);
         //new MainCanvas();
         new Initializer();
