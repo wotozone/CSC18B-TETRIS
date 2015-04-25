@@ -303,8 +303,8 @@ public class LoginScreen extends javax.swing.JFrame {
         new Initializer();
         Thread t = new Thread(new Testing());
         t.start();
-        Thread d = new Thread(new DropDownThread());
-        d.start();
+        //Thread d = new Thread(new DropDownThread());
+        //d.start();
     }
     
     public static void main(String args[]) {

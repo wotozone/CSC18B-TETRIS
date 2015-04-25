@@ -37,6 +37,11 @@ public class BlockManager {
     public int[] xAxis= new int[4];
     public int[] yAxis= new int[4];
     
+    //Hold
+    public int holdBlock=0;
+    public boolean holdable=true;
+    private boolean firstHold = true;
+    
     public int rAxis;
     
     //BlockInfo.
@@ -50,7 +55,27 @@ public class BlockManager {
             NextBlocks.setNextRandomBlock();
             initAxis();//Just in case
             setInitBlockShape(currentBlock);
+            holdable=true;
             isGameOver();
+        }
+    }
+    
+    public void holdBlock(){
+        if(holdable&&Initializer.start){
+            holdable=false;
+            resetPath();
+            if(firstHold){
+                currentBlock=holdBlock;
+                setNextBlockToDisplay();
+                firstHold=false;
+            }else{
+                int b=currentBlock;
+                currentBlock=holdBlock;
+                holdBlock=b;
+                initAxis();//Just in case
+                setInitBlockShape(currentBlock);
+                isGameOver();
+            }
         }
     }
     
@@ -162,6 +187,7 @@ public class BlockManager {
             movePath();
         }
         fixPath();
+        loadNextBlock();
     }
     
     private void setInitBlockShape(int shapeNum){
