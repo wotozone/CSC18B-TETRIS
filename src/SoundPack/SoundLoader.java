@@ -5,7 +5,11 @@
  */
 package SoundPack;
 
-import javafx.scene.media.Media;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 /**
  *
@@ -14,24 +18,38 @@ import javafx.scene.media.Media;
 public class SoundLoader {
     
     //BACKGROUND MUSIC
-    public final Media BACKGROUND;
+    public final AudioInputStream BACKGROUND;
     
     //COMBO SOUNDS
-    public final Media COMBO1;
-    public final Media COMBO2;
-    public final Media COMBO3;
+    public final AudioInputStream COMBO1;
+    public final AudioInputStream COMBO2;
+    public final AudioInputStream COMBO3;
     
     //WOOHOO
-    public final Media WOOHOO;
+    public final AudioInputStream WOOHOO;
     
-    public SoundLoader(){
-        BACKGROUND= new Media("Sounds/BACKGROUND.mp3");
+    public SoundLoader() throws Exception{
+        InputStream audioSrc = getClass().getResourceAsStream("Sounds/BACKGROUND.mp3");
+        InputStream bufferedIn = new BufferedInputStream(audioSrc);
+        BACKGROUND = AudioSystem.getAudioInputStream(new FileInputStream("audioSrc"));
         
-        COMBO1= new Media("Sounds/COMBO1.mp3");
-        COMBO2= new Media("Sounds/COMBO2.mp3");
-        COMBO3= new Media("Sounds/COMBO3.mp3");
         
-        WOOHOO= new Media("Sounds/WOOHOO.mp3");
+        audioSrc = getClass().getResourceAsStream("Sounds/COMBO1.mp3");
+        bufferedIn = new BufferedInputStream(audioSrc);
+        COMBO1= AudioSystem.getAudioInputStream(new FileInputStream("audioSrc"));
+        
+        audioSrc = getClass().getResourceAsStream("Sounds/COMBO2.mp3");
+        bufferedIn = new BufferedInputStream(audioSrc);
+        COMBO2= AudioSystem.getAudioInputStream(new FileInputStream("audioSrc"));
+        
+        audioSrc = getClass().getResourceAsStream("Sounds/COMBO3.mp3");
+        bufferedIn = new BufferedInputStream(audioSrc);
+        COMBO3= AudioSystem.getAudioInputStream(new FileInputStream("audioSrc"));
+        
+        
+        audioSrc = getClass().getResourceAsStream("Sounds/WOOHOO.mp3");
+        bufferedIn = new BufferedInputStream(audioSrc);
+        WOOHOO= AudioSystem.getAudioInputStream(new FileInputStream("audioSrc"));
     }
     
 }
