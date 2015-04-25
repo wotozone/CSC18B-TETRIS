@@ -11,8 +11,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 import javax.swing.*;
 
 
@@ -34,73 +32,40 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     public static final int WINDOW_WIDTH=700;
     public static final int WINDOW_HEIGHT=800;
     
-    //other constants
-    public static final int INIT_TIME_DELAY=1000;
-    
     private BufferedImage bi = null;
 
     private boolean left = false, right = false, down = false;
     
     private int moveDelay;
     private int dropDelay;
-    private int timeDelay=0;
-    private int decDelay=0;
-    
-    private Timer dropDown;
 
 
-    public Testing() {
+  public Testing() {
   
-        bi = new BufferedImage(Initializer.WINDOW_WIDTH, Initializer.WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
+    bi = new BufferedImage(Initializer.WINDOW_WIDTH, Initializer.WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-        this.addKeyListener(this);
-        this.setSize(Initializer.WINDOW_WIDTH, Initializer.WINDOW_HEIGHT); 
-        this.setTitle("TETRIS");
-        this.setResizable(false);  
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);  
-        this.setLocationRelativeTo(null);
-
-        Initializer.start=true;
-        Initializer.end=false;
-
-        //NextBlocks.setSpecificBlock(1, 6);
-        BlockManager.bm.setNextBlockToDisplay();
-        initTimer();
-
-        fps = new FPSManager();
-        try {
-            imageManager = new ImageManager();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    this.addKeyListener(this);
+    this.setSize(Initializer.WINDOW_WIDTH, Initializer.WINDOW_HEIGHT); 
+    this.setTitle("TETRIS");
+    this.setResizable(false);  
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.setVisible(true);  
+    this.setLocationRelativeTo(null);
+    
+    Initializer.start=true;
+    Initializer.end=false;
+    
+    //NextBlocks.setSpecificBlock(1, 6);
+    BlockManager.bm.setNextBlockToDisplay();
+    
+    fps = new FPSManager();
+    try {
+        imageManager = new ImageManager();
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+ }
 
-    private void initTimer(){
-        dropDown = new Timer();
-        dropDown.scheduleAtFixedRate(new TimerTask(){
-            @Override
-            public void run(){
-                /*
-                for(int i=0;i<StartScreen.BLOCK_NUM_HEIGHT;i++){
-                    for(int k=0;k<StartScreen.BLOCK_NUM_WIDTH;k++){
-                        blocks[k][i].setBlockColor(test);
-                    }
-                }
-                if(test>7)test=0;
-                test++;
-                */
-                if(INIT_TIME_DELAY>timeDelay+decDelay){
-                    timeDelay++;
-                }else{
-                    BlockManager.bm.setBlockMoveDown();
-                    if(decDelay<=750)decDelay++;
-                    timeDelay=0;
-                    System.out.println("Delay: "+(1000-decDelay));
-                }
-            }
-        }, 0, 1);
-    }
  public void run() {
 
     try {
@@ -196,11 +161,6 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                 break;
             case KeyEvent.VK_SPACE:
                 BlockManager.bm.setQuickDown();
-                break;
-            case KeyEvent.VK_CONTROL:
-                System.out.println("sdf");
-                BlockManager.bm.holdBlock();
-                break;
             } 
    }
 
