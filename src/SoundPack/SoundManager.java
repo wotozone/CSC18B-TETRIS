@@ -5,16 +5,11 @@
  */
 package SoundPack;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.io.File;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+
 
 
 
@@ -26,61 +21,36 @@ public class SoundManager {
     
     public SoundLoader soundLoader;
     
-    public AudioInputStream currentBGM=null;
+    public AudioClip currentBGM;
     
     public SoundManager() throws Exception{
         soundLoader=new SoundLoader();
     }
     
-    /*
-    public void playComboSound(int value) throws IOException{
-        Clip clip;
+    public void playCombo(int count){
+        AudioClip clip;
         try {
-            clip = AudioSystem.getClip();
-            switch(value){
-                case(0):clip.open(soundLoader.COMBO1);break;
-                case(1):clip.open(soundLoader.COMBO2);break;
-                case(2):clip.open(soundLoader.COMBO3);break;
+            switch(count){
+                case 2:
+                    clip = Applet.newAudioClip(soundLoader.COMBO1.toURL());
+                case 3:
+                    clip = Applet.newAudioClip(soundLoader.COMBO2.toURL());
                 default:
-                    System.out.println("No Sound");
-                    clip.open(soundLoader.COMBO1);
-                    break;
+                    clip = Applet.newAudioClip(soundLoader.COMBO3.toURL());
             }
-            clip.start();
-        } catch (LineUnavailableException ex) {
-            ex.printStackTrace();
+            clip.play();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        
     }
-    */
     
-    public void playBackground() throws IOException, UnsupportedAudioFileException{
-        Clip clip;
+    public void playBackground(){
         try {
-            InputStream bufferedIn = new BufferedInputStream(soundLoader.BACKGROUND);
-            AudioInputStream ais;
-            ais = AudioSystem.getAudioInputStream(soundLoader.BACKGROUND);
-            clip = AudioSystem.getClip();
-            clip.open(ais);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-            clip.start();
-        } catch (LineUnavailableException ex) {
-            ex.printStackTrace();
+            currentBGM = Applet.newAudioClip(soundLoader.BACKGROUND.toURL());
+            currentBGM.loop();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-    /*
-    public void playWooHoo() throws IOException{
-        Clip clip;
-        try {
-            clip = AudioSystem.getClip();
-            clip.open(soundLoader.WOOHOO);
-            clip.start();
-        } catch (LineUnavailableException ex) {
-            ex.printStackTrace();
-        }
-    }
-    */
-    //public Media getGameOverImage(){
-    //    return imageLoader.GAME_OVER;
-    //}
+    
 }

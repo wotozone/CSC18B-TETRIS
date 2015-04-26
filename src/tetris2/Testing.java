@@ -6,6 +6,7 @@
 package tetris2;
 
 import SoundPack.SoundManager;
+import SoundPack.test;
 import blockShape.BlockManager;
 import imageRendering.ImageManager;
 import java.awt.*;
@@ -73,8 +74,9 @@ public class Testing extends JFrame implements Runnable, KeyListener{
         fps = new FPSManager();
         try {
             imageManager = new ImageManager();
-            //soundManager = new SoundManager();
-            //soundManager.playBackground();
+            soundManager = new SoundManager();
+            soundManager.playBackground();
+            //test t = new test();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -118,7 +120,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
             Thread.sleep(1);//optimizing fps
             
             if(Initializer.start) {
-                if(moveDelay>=10){//move per 0.1sec
+                if(moveDelay>=30){//move per 0.1sec
                     keyControl();
                 }else{
                     moveDelay+=1;

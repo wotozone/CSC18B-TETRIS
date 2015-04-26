@@ -5,6 +5,7 @@
  */
 package blockShape;
 
+import SoundPack.SoundManager;
 import tetris2.BlockStatus;
 import tetris2.Initializer;
 import tetris2.NextBlocks;
@@ -24,6 +25,8 @@ public class BlockManager {
     public static InverseZBlock inverseZ = new InverseZBlock();
     public static SquareBlock square = new SquareBlock();
     public static TBlock letterT = new TBlock();
+    
+    public SoundManager soundManager;
     
     //CurrentBlock
     public int currentBlock=0;
@@ -53,6 +56,14 @@ public class BlockManager {
     public int[] blocks= new int[4];
     
     //RemainBlocks
+    
+    public BlockManager(){
+        try {
+            soundManager = new SoundManager();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     
     public void setNextBlockToDisplay(){
         if(Initializer.start){
@@ -284,6 +295,7 @@ public class BlockManager {
     
     private void comboCounter(){
         combo++;
+        if(combo>1)soundManager.playCombo(combo);
     }
     
     private void endComboBonus(){
