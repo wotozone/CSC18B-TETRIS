@@ -44,13 +44,13 @@ public class StickBlock extends BlockInfo {
         rAxis=1;
         //initAxis
         xAxis[0]=4;
-        yAxis[0]=0;
+        yAxis[0]=1;
         xAxis[1]=4;
-        yAxis[1]=1;
+        yAxis[1]=2;
         xAxis[2]=4;
-        yAxis[2]=2;
+        yAxis[2]=3;
         xAxis[3]=4;
-        yAxis[3]=3;
+        yAxis[3]=4;
         for(int i=0;i<4;i++){
             BlockStatus.blocks[xAxis[i]][yAxis[i]].setBlockColor(currentBlock);
         }

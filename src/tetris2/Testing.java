@@ -29,8 +29,6 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     public static final int BLOCK_START_X=25;
     public static final int BLOCK_START_Y=75;
     //#of blocks each
-    public static final int BLOCK_NUM_WIDTH=10;
-    public static final int BLOCK_NUM_HEIGHT=20;
     
     //size of window
     public static final int WINDOW_WIDTH=700;
@@ -75,8 +73,8 @@ public class Testing extends JFrame implements Runnable, KeyListener{
         fps = new FPSManager();
         try {
             imageManager = new ImageManager();
-            soundManager = new SoundManager();
-            soundManager.playBackground();
+            //soundManager = new SoundManager();
+            //soundManager.playBackground();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -145,20 +143,25 @@ public class Testing extends JFrame implements Runnable, KeyListener{
         
         //Main playground
         gs.drawImage(imageManager.getOutsideFrame(), Initializer.BLOCK_START_X-10, Initializer.BLOCK_START_Y-10, this);
-        for(int i=0;i<Initializer.BLOCK_NUM_HEIGHT;i++){
+        for(int i=1;i<Initializer.BLOCK_NUM_HEIGHT;i++){
             for(int k=0;k<Initializer.BLOCK_NUM_WIDTH;k++){
                 gs.drawImage(imageManager.getBlockColorImage(BlockStatus.blocks[k][i].getBlockColor()), 
                                                             Initializer.BLOCK_START_X+(k*Initializer.BLOCK_SIZE_X),
-                                                            Initializer.BLOCK_START_Y+(i*Initializer.BLOCK_SIZE_Y), this);
+                                                            Initializer.BLOCK_START_Y+((i-1)*Initializer.BLOCK_SIZE_Y), this);
 
             }
         }
-
-
+        
+        
+        //Score
+        gs.fillRect(400, 75, 250, 50);
+        gs.setColor(Color.BLACK);
+        gs.drawString(String.valueOf(BlockManager.bm.score), 425, 100);
+        
         //Next blocks
         for(int i=0;i<5;i++){
             gs.setColor(ColorManager.NEXTBOX);
-            gs.fillRect(400, 75+(i*120), 100, 100);
+            gs.fillRect(400, 200+(i*120), 100, 100);
         }
         
         //When Game has ended
@@ -203,7 +206,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
             case KeyEvent.VK_SPACE:
                 BlockManager.bm.setQuickDown();
                 break;
-            case KeyEvent.VK_CONTROL:
+            case KeyEvent.VK_SHIFT:
                 System.out.println("sdf");
                 BlockManager.bm.holdBlock();
                 break;

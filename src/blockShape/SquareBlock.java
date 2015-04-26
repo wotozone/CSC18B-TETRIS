@@ -34,13 +34,13 @@ public class SquareBlock extends BlockInfo {
         rAxis=0;
         //initAxis
         xAxis[0]=4;
-        yAxis[0]=0;
+        yAxis[0]=1;
         xAxis[1]=5;
-        yAxis[1]=0;
+        yAxis[1]=1;
         xAxis[2]=4;
-        yAxis[2]=1;
+        yAxis[2]=2;
         xAxis[3]=5;
-        yAxis[3]=1;
+        yAxis[3]=2;
         for(int i=0;i<4;i++){
             BlockStatus.blocks[xAxis[i]][yAxis[i]].setBlockColor(currentBlock);
         }

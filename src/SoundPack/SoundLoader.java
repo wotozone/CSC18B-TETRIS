@@ -18,22 +18,21 @@ import javax.sound.sampled.AudioSystem;
 public class SoundLoader {
     
     //BACKGROUND MUSIC
-    public final AudioInputStream BACKGROUND;
+    public final InputStream BACKGROUND;
     
     //COMBO SOUNDS
-    public final AudioInputStream COMBO1;
-    public final AudioInputStream COMBO2;
-    public final AudioInputStream COMBO3;
+    //public final AudioInputStream COMBO1;
+    //public final AudioInputStream COMBO2;
+    //public final AudioInputStream COMBO3;
     
     //WOOHOO
-    public final AudioInputStream WOOHOO;
+    //public final AudioInputStream WOOHOO;
     
     public SoundLoader() throws Exception{
-        InputStream audioSrc = getClass().getResourceAsStream("Sounds/BACKGROUND.mp3");
-        InputStream bufferedIn = new BufferedInputStream(audioSrc);
-        BACKGROUND = AudioSystem.getAudioInputStream(new FileInputStream("audioSrc"));
+        BACKGROUND = getClass().getResourceAsStream("Sounds/BACKGROUND.mp3");
+        //BACKGROUND = AudioSystem.getAudioInputStream(audioSrc);
         
-        
+        /*
         audioSrc = getClass().getResourceAsStream("Sounds/COMBO1.mp3");
         bufferedIn = new BufferedInputStream(audioSrc);
         COMBO1= AudioSystem.getAudioInputStream(new FileInputStream("audioSrc"));
@@ -50,6 +49,7 @@ public class SoundLoader {
         audioSrc = getClass().getResourceAsStream("Sounds/WOOHOO.mp3");
         bufferedIn = new BufferedInputStream(audioSrc);
         WOOHOO= AudioSystem.getAudioInputStream(new FileInputStream("audioSrc"));
+        */
     }
     
 }

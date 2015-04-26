@@ -42,6 +42,11 @@ public class BlockManager {
     public boolean holdable=true;
     private boolean firstHold = true;
     
+    //Score
+    public int score=0;
+    public int combo=0;
+    public int blockClear=0;
+    
     public int rAxis;
     
     //BlockInfo.
@@ -58,6 +63,7 @@ public class BlockManager {
             holdable=true;
             isGameOver();
         }
+        System.out.println("POINT: "+score);
     }
     
     public void holdBlock(){
@@ -181,11 +187,14 @@ public class BlockManager {
     }
     
     private void quickDown(){
+        int point = 0;
         for(int j=0;j<=20;j++){
             if(checkPath()==1)break;
             resetPath();
             movePath();
+            point+=10;
         }
+        score+=point;
         fixPath();
         loadNextBlock();
     }
@@ -246,10 +255,11 @@ public class BlockManager {
     
     private void isBlockFilled(){
         boolean filled=false;
+        blockClear=0;
         int k=Initializer.BLOCK_NUM_HEIGHT;//maximum height
         for(int i=0;i<k;i++){
             filled=true;
-            for(int j=0;j<Initializer.BLOCK_NUM_WIDTH;j++){
+            for(int j=0;j<Initializer.BLOCK_NUM_WIDTH;j++){//check the line is filled
                 if(BlockStatus.blocks[j][i].isBlockPlaced()==false){
                     filled=false;
                     break;
@@ -257,10 +267,27 @@ public class BlockManager {
             }
             if(filled){
                 breakBlock(i);
+                blockClear++;
                 //i--;
                 //k--;
             }
         }
+        if(blockClear!=0){
+            comboCounter();
+            score+=(500*blockClear*combo);
+        }else{
+            if(combo!=0){
+                endComboBonus();
+            }
+        }
+    }
+    
+    private void comboCounter(){
+        combo++;
+    }
+    
+    private void endComboBonus(){
+        combo=0;
     }
     
     private void breakBlock(int column){
@@ -326,7 +353,7 @@ public class BlockManager {
                     //if(BlockStatus.blocks[xAxis[i]-1][yAxis[i]].isBlockPlaced()==true)return 2;
                     if(xAxis[i]-1<0)System.out.println("cannot move left");
                     if(xAxis[i]-1>=0){
-                        if(BlockStatus.blocks[xAxis[i]-1][yAxis[i]].isBlockPlaced()==true)return 1;//block is stuck
+                        if(BlockStatus.blocks[xAxis[i]-1][yAxis[i]].isBlockPlaced()==true)return 2;//block is stuck
                     }else{
                         return 2;
                     }
@@ -336,7 +363,7 @@ public class BlockManager {
                     //if(BlockStatus.blocks[xAxis[i]+1][yAxis[i]].isBlockPlaced()==true)return 2;
                     if(xAxis[i]+1>=Initializer.BLOCK_NUM_WIDTH)System.out.println("cannot move right");
                     if(xAxis[i]+1<Initializer.BLOCK_NUM_WIDTH){
-                        if(BlockStatus.blocks[xAxis[i]+1][yAxis[i]].isBlockPlaced()==true)return 1;//block is stuck
+                        if(BlockStatus.blocks[xAxis[i]+1][yAxis[i]].isBlockPlaced()==true)return 2;//block is stuck
                     }else{
                         return 2;
                     }

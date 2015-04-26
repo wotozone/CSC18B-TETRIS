@@ -14,7 +14,7 @@ public class BlockStatus {
     private int blockColor=0;
     private boolean isBlock=false;
     
-    public static BlockStatus[][] blocks = new BlockStatus[10][20];
+    public static BlockStatus[][] blocks = new BlockStatus[Initializer.BLOCK_NUM_WIDTH][Initializer.BLOCK_NUM_HEIGHT];
     
     public void setBlockColor(int colorNum){
         blockColor=colorNum;

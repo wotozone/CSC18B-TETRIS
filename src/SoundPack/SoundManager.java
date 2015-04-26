@@ -5,13 +5,16 @@
  */
 package SoundPack;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 
 
@@ -29,7 +32,7 @@ public class SoundManager {
         soundLoader=new SoundLoader();
     }
     
-    
+    /*
     public void playComboSound(int value) throws IOException{
         Clip clip;
         try {
@@ -49,20 +52,23 @@ public class SoundManager {
         }
         
     }
+    */
     
-    
-    public void playBackground() throws IOException{
+    public void playBackground() throws IOException, UnsupportedAudioFileException{
         Clip clip;
         try {
+            InputStream bufferedIn = new BufferedInputStream(soundLoader.BACKGROUND);
+            AudioInputStream ais;
+            ais = AudioSystem.getAudioInputStream(soundLoader.BACKGROUND);
             clip = AudioSystem.getClip();
-            clip.open(soundLoader.BACKGROUND);
+            clip.open(ais);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.start();
         } catch (LineUnavailableException ex) {
             ex.printStackTrace();
         }
     }
-    
+    /*
     public void playWooHoo() throws IOException{
         Clip clip;
         try {
@@ -73,7 +79,7 @@ public class SoundManager {
             ex.printStackTrace();
         }
     }
-    
+    */
     //public Media getGameOverImage(){
     //    return imageLoader.GAME_OVER;
     //}

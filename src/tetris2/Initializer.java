@@ -27,7 +27,7 @@ public class Initializer {
     public static final int BLOCK_START_Y=75;
     //#of blocks each
     public static final int BLOCK_NUM_WIDTH=10;
-    public static final int BLOCK_NUM_HEIGHT=20;
+    public static final int BLOCK_NUM_HEIGHT=21;
     
     //size of window
     public static final int WINDOW_WIDTH=700;
