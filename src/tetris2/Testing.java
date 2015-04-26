@@ -75,7 +75,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
         try {
             imageManager = new ImageManager();
             soundManager = new SoundManager();
-            soundManager.playBackground();
+            soundManager.playBackground(1);
             //test t = new test();
         } catch (Exception ex) {
             ex.printStackTrace();

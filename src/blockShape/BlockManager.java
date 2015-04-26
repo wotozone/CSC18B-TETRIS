@@ -284,7 +284,12 @@ public class BlockManager {
             }
         }
         if(blockClear!=0){
-            comboCounter();
+            if(blockClear>2){
+                comboCounter(true);
+                soundManager.playImpactSound();
+            }else{
+                comboCounter(false);
+            }
             score+=(500*blockClear*combo);
         }else{
             if(combo!=0){
@@ -293,9 +298,10 @@ public class BlockManager {
         }
     }
     
-    private void comboCounter(){
+    private void comboCounter(boolean impact){
         combo++;
         if(combo>1)soundManager.playCombo(combo);
+        //if(!impact&&combo>1)soundManager.playAltCombo(combo);
     }
     
     private void endComboBonus(){
