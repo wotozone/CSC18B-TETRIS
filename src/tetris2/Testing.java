@@ -226,22 +226,30 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     public void keyPressed(KeyEvent ke) {
         switch(ke.getKeyCode()){
             case KeyEvent.VK_LEFT:  
+                BlockManager.bm.setBlockMove(1);
+                moveDelay=0;
+                controlDelay=0;
                 left = true;       
                 break;
             case KeyEvent.VK_RIGHT: 
+                BlockManager.bm.setBlockMove(2);
+                moveDelay=0;
+                controlDelay=0;
                 right = true;      
                 break;
             case KeyEvent.VK_UP:   
                 BlockManager.bm.setBlockRotate();
                 break;
             case KeyEvent.VK_DOWN:   
+                BlockManager.bm.setBlockMove(0);
+                moveDelay=0;
+                controlDelay=0;
                 down = true;      
                 break;
             case KeyEvent.VK_SPACE:
                 BlockManager.bm.setQuickDown();
                 break;
             case KeyEvent.VK_SHIFT:
-                System.out.println("sdf");
                 BlockManager.bm.holdBlock();
                 break;
             case KeyEvent.VK_ENTER:
@@ -249,6 +257,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                     new Initializer();
                     Initializer.start=true;
                     Initializer.end=false;
+                    decDelay=0;
                     BlockManager.bm.setNextBlockToDisplay();
                 }
                 break;
