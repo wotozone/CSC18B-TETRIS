@@ -42,6 +42,7 @@ public class BlockStatus {
     }
     
     public int getBlockColor(){
+        if(isBlock&&blockColor==7)return 8;
         return blockColor;
     }
     

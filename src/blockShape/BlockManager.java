@@ -26,7 +26,6 @@ public class BlockManager {
     public static SquareBlock square = new SquareBlock();
     public static TBlock letterT = new TBlock();
     
-    public SoundManager soundManager;
     
     //CurrentBlock
     public int currentBlock=0;
@@ -43,12 +42,16 @@ public class BlockManager {
     //Hold
     public int holdBlock=0;
     public boolean holdable=true;
-    private boolean firstHold = true;
+    public boolean firstHold = true;
     
     //Score
     public int score=0;
     public int combo=0;
     public int blockClear=0;
+    
+    //Sound
+    public boolean soundOn=false;
+    public int soundType=0;
     
     public int rAxis;
     
@@ -58,11 +61,6 @@ public class BlockManager {
     //RemainBlocks
     
     public BlockManager(){
-        try {
-            soundManager = new SoundManager();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
     
     public void setNextBlockToDisplay(){
@@ -74,7 +72,7 @@ public class BlockManager {
             holdable=true;
             isGameOver();
         }
-        System.out.println("POINT: "+score);
+        //System.out.println("POINT: "+score);
     }
     
     public void holdBlock(){
@@ -82,7 +80,8 @@ public class BlockManager {
             holdable=false;
             resetPath();
             if(firstHold){
-                currentBlock=holdBlock;
+                holdBlock=currentBlock;
+                initAxis();//Just in case
                 setNextBlockToDisplay();
                 firstHold=false;
             }else{
@@ -284,11 +283,13 @@ public class BlockManager {
             }
         }
         if(blockClear!=0){
+            comboCounter();
             if(blockClear>2){
-                comboCounter(true);
-                soundManager.playImpactSound();
-            }else{
-                comboCounter(false);
+                soundOn=true;
+                soundType=0;
+            }else if(combo>1){
+                soundOn=true;
+                soundType=combo;
             }
             score+=(500*blockClear*combo);
         }else{
@@ -298,13 +299,14 @@ public class BlockManager {
         }
     }
     
-    private void comboCounter(boolean impact){
+    private void comboCounter(){
         combo++;
-        if(combo>1)soundManager.playCombo(combo);
+        //if(!impact&&combo>1)soundManager.playCombo(combo);
         //if(!impact&&combo>1)soundManager.playAltCombo(combo);
     }
     
     private void endComboBonus(){
+        //score+=combo*1000;
         combo=0;
     }
     
@@ -360,7 +362,7 @@ public class BlockManager {
             switch(direction){
                 case 0://down
                     if(yAxis[i]+1<Initializer.BLOCK_NUM_HEIGHT){
-                        if(BlockStatus.blocks[xAxis[i]][yAxis[i]+1].isBlockPlaced()==true)System.out.println("stuck: "+xAxis[i]+"/"+(yAxis[i]+1));
+                        //if(BlockStatus.blocks[xAxis[i]][yAxis[i]+1].isBlockPlaced()==true)System.out.println("stuck: "+xAxis[i]+"/"+(yAxis[i]+1));
                         if(BlockStatus.blocks[xAxis[i]][yAxis[i]+1].isBlockPlaced()==true)return 1;//block is stuck
                     }else{
                         System.out.println("stuck2");
@@ -388,7 +390,7 @@ public class BlockManager {
                     break;
                 case 3://rotation
                     if(yAxis[i]+1<Initializer.BLOCK_NUM_HEIGHT){
-                        if(BlockStatus.blocks[xAxis[i]][yAxis[i]+1].isBlockPlaced()==true)System.out.println("stuck");
+                        //if(BlockStatus.blocks[xAxis[i]][yAxis[i]+1].isBlockPlaced()==true)System.out.println("stuck");
                         if(BlockStatus.blocks[xAxis[i]][yAxis[i]+1].isBlockPlaced()==true)return 1;//block is stuck
                     }else if(xAxis[i]-1<0||xAxis[i]+1>=Initializer.BLOCK_NUM_WIDTH){
                         return 2;
@@ -397,7 +399,7 @@ public class BlockManager {
                     }
                     break;
                 case 4://currentPlace
-                    if(BlockStatus.blocks[xAxis[i]][yAxis[i]].isBlockPlaced()==true)System.out.println("stuck: "+xAxis[i]+"/"+(yAxis[i]+1));
+                    //if(BlockStatus.blocks[xAxis[i]][yAxis[i]].isBlockPlaced()==true)System.out.println("stuck: "+xAxis[i]+"/"+(yAxis[i]+1));
                     if(BlockStatus.blocks[xAxis[i]][yAxis[i]].isBlockPlaced()==true)return 1;//block is stuck
                     break;
             }
@@ -407,7 +409,7 @@ public class BlockManager {
     
     private boolean checkInitPath(){
         for(int i=0;i<4;i++){
-            if(BlockStatus.blocks[xAxis[i]][yAxis[i]].isBlockPlaced()==true)System.out.println("stuck at startline: "+xAxis[i]+"/"+(yAxis[i]+1));
+            //if(BlockStatus.blocks[xAxis[i]][yAxis[i]].isBlockPlaced()==true)System.out.println("stuck at startline: "+xAxis[i]+"/"+(yAxis[i]+1));
             if(BlockStatus.blocks[xAxis[i]][yAxis[i]].isBlockPlaced()==true)return false;//block is stuck
         }
         return true;//can move

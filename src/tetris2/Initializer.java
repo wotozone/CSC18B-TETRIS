@@ -5,6 +5,7 @@
  */
 package tetris2;
 
+import blockShape.BlockManager;
 import java.awt.Canvas;
 import javax.swing.JFrame;
 
@@ -54,5 +55,10 @@ public class Initializer {
             }
         }
         NextBlocks.initBlocks();
+        BlockManager.bm.firstHold=true;
+        BlockManager.bm.holdBlock=0;
+        BlockManager.bm.holdable=true;
+        BlockManager.bm.currentBlock=0;
+        BlockManager.bm.score=0;
     }
 }

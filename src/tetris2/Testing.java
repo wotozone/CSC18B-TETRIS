@@ -27,19 +27,20 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     public static final int BLOCK_SIZE_X=35;
     public static final int BLOCK_SIZE_Y=35;
     //point where block start
-    public static final int BLOCK_START_X=25;
+    public static final int BLOCK_START_X=225;
     public static final int BLOCK_START_Y=75;
     //#of blocks each
     
     //size of window
-    public static final int WINDOW_WIDTH=700;
+    public static final int WINDOW_WIDTH=900;
     public static final int WINDOW_HEIGHT=800;
     
     //other constants
     public static final int INIT_TIME_DELAY=1000;
     
     private BufferedImage bi = null;
-
+    
+    private boolean init = true;
     private boolean left = false, right = false, down = false;
     
     private int moveDelay;
@@ -102,7 +103,15 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                     BlockManager.bm.setBlockMoveDown();
                     if(decDelay<=750)decDelay++;
                     timeDelay=0;
-                    System.out.println("Delay: "+(1000-decDelay));
+                    //System.out.println("Delay: "+(1000-decDelay));
+                }
+                if(BlockManager.bm.soundOn){
+                    if(BlockManager.bm.soundType==0){
+                        soundManager.playImpactSound();
+                    }else{
+                        soundManager.playCombo(BlockManager.bm.soundType);
+                    }
+                    BlockManager.bm.soundOn=false;
                 }
             }
         }, 0, 1);
@@ -137,14 +146,19 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     public void draw() {
 
         Graphics gs = bi.getGraphics();
-        gs.drawImage(imageManager.getBackgroundImage(), 0, 0, this);
+        if(init){
+            gs.drawImage(imageManager.getBackgroundImage(), 0, 0, this);
+            gs.drawImage(imageManager.getOutsideFrame(), Initializer.BLOCK_START_X-10, Initializer.BLOCK_START_Y-10, this);
+            init=false;
+        }
 
         fps.checkFrame();
         fps.setFrame();
+        gs.fillRect(10, 40, 70, 15);
+        gs.setColor(Color.BLACK);
         gs.drawString("FPS: "+fps.getFramePerSecond(), 20, 50);//Show Frame Per Second
         
         //Main playground
-        gs.drawImage(imageManager.getOutsideFrame(), Initializer.BLOCK_START_X-10, Initializer.BLOCK_START_Y-10, this);
         for(int i=1;i<Initializer.BLOCK_NUM_HEIGHT;i++){
             for(int k=0;k<Initializer.BLOCK_NUM_WIDTH;k++){
                 gs.drawImage(imageManager.getBlockColorImage(BlockStatus.blocks[k][i].getBlockColor()), 
@@ -157,14 +171,25 @@ public class Testing extends JFrame implements Runnable, KeyListener{
         
         //Score
         gs.fillRect(400, 75, 250, 50);
-        gs.setColor(Color.BLACK);
-        gs.drawString(String.valueOf(BlockManager.bm.score), 425, 100);
+        gs.drawImage(imageManager.getScoreBoxFrame(), Initializer.BLOCK_START_X+375, Initializer.BLOCK_START_Y, this);
+        //gs.setColor(Color.BLACK);
+        //gs.drawString(String.valueOf(BlockManager.bm.score), 425, 100);
+        imageManager.setScoreImage(BlockManager.bm.score);
+        for(int i=0;i<8;i++){
+            if(imageManager.scoreImage[i]!=null)gs.drawImage(imageManager.scoreImage[i], 550-(i*20), 80, this);
+        }
         
         //Next blocks
-        for(int i=0;i<5;i++){
+        for(int i=0;i<4;i++){
             gs.setColor(ColorManager.NEXTBOX);
-            gs.fillRect(400, 200+(i*120), 100, 100);
+            gs.fillRect(Initializer.BLOCK_START_X+375, (Initializer.BLOCK_START_Y+75)+(i*120), 100, 100);
+            gs.drawImage(imageManager.getNextBlockFrame(), Initializer.BLOCK_START_X+375, (Initializer.BLOCK_START_Y+75)+(i*120), this);
+            gs.drawImage(imageManager.getNextBlockImage(NextBlocks.getSpecificBlock(i+1)), Initializer.BLOCK_START_X+375, (Initializer.BLOCK_START_Y+75)+(i*120), this);
         }
+        
+        //hold block frame
+        gs.drawImage(imageManager.getHoldBlockFrame(), Initializer.BLOCK_START_X+375, Initializer.BLOCK_START_Y+600, this);
+        if(!BlockManager.bm.firstHold)gs.drawImage(imageManager.getNextBlockImage(BlockManager.bm.holdBlock), Initializer.BLOCK_START_X+375, Initializer.BLOCK_START_Y+610, this);
         
         //When Game has ended
         if(Initializer.end){
@@ -211,6 +236,14 @@ public class Testing extends JFrame implements Runnable, KeyListener{
             case KeyEvent.VK_SHIFT:
                 System.out.println("sdf");
                 BlockManager.bm.holdBlock();
+                break;
+            case KeyEvent.VK_ENTER:
+                if(Initializer.end){
+                    new Initializer();
+                    Initializer.start=true;
+                    Initializer.end=false;
+                    BlockManager.bm.setNextBlockToDisplay();
+                }
                 break;
             } 
    }
