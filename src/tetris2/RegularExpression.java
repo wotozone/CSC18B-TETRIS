@@ -46,4 +46,11 @@ public class RegularExpression {
         if(m.matches()==true)return true;
         return false;
     }
+    
+    public static boolean checkNickname(String s){
+        Pattern p = Pattern.compile("^[a-zA-Z0-9]{4,8}$");
+        Matcher m = p.matcher(s);
+        if(m.matches()==true)return true;
+        return false;
+    }
 }

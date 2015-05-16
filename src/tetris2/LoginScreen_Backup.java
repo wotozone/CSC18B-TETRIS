@@ -6,7 +6,6 @@
 package tetris2;
 
 import Database.DataLoader;
-import Database.DatabaseManager;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.logging.Level;
@@ -18,12 +17,12 @@ import tetris2.threads.DropDownThread;
  *
  * @author minjikim
  */
-public class LoginScreen extends javax.swing.JFrame {
+public class LoginScreen_Backup extends javax.swing.JFrame {
 
     /**
      * Creates new form LoginScreen
      */
-    public LoginScreen() {
+    public LoginScreen_Backup() {
         initComponents();
     }
 
@@ -46,8 +45,6 @@ public class LoginScreen extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
         jButton3 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -95,18 +92,21 @@ public class LoginScreen extends javax.swing.JFrame {
             }
         });
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-
-        jLabel6.setText("Set your nickname");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(149, 149, 149)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(193, 193, 193)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel1))))
+                .addContainerGap(152, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(239, 239, 239)
                 .addComponent(jLabel2)
@@ -119,23 +119,8 @@ public class LoginScreen extends javax.swing.JFrame {
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
                 .addGap(143, 143, 143))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(193, 193, 193)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(245, 245, 245)
-                        .addComponent(jLabel6)))
-                .addContainerGap(152, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,17 +137,13 @@ public class LoginScreen extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addGap(44, 44, 44)
+                .addGap(30, 30, 30)
                 .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(80, 80, 80)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48))
         );
@@ -181,14 +162,12 @@ public class LoginScreen extends javax.swing.JFrame {
                 String name =jTextField1.getText();
                 if(checkID(name)==true){
                     savedUserName=name;
-                    if(DatabaseManager.dbm.checkAccountInfo(name,"username","account")==true){
+                    if(ObjectStream.initsaveStream(name)==true){
                         jTextField1.setEditable(false);
                         jLabel4.setText("Type your password");
                         jPasswordField1.setVisible(true);
                         jLabel3.setText("Password must include at least one numerical, special, and capital letter");
                         jButton1.setText("Create Account");
-                        jTextField2.setVisible(true);
-                        jLabel6.setVisible(true);
                         logInState=1;
                     }else{
                         jTextField1.setEditable(false);
@@ -196,6 +175,10 @@ public class LoginScreen extends javax.swing.JFrame {
                         jPasswordField1.setVisible(true);
                         //jLabel5.setText("Password must include at least one numerical, special, and capital letter");
                         logInState=2;
+                        ObjectStream.initLoadStream(name);
+                        ObjectStream.loadID();
+                        savedPassword=ObjectStream.us.getPassword();
+                        ObjectStream.closeLoadStream();
                     }
                     
                     //ObjectStream.saveID(s);
@@ -204,29 +187,19 @@ public class LoginScreen extends javax.swing.JFrame {
                 }
                 break;
             case 1://to Create New Account
-                savedPassword =jPasswordField1.getText();
-                savedNickname =jTextField2.getText();
-                if(checkPassword(savedPassword)==true){
-                    if(savedNickname==""){
-                        jLabel5.setText("Set your nickname Correctly");
-                    }else if(RegularExpression.checkNickname(savedNickname)==false){
-                        jLabel5.setText("Incorrect nickname");
-                    }else if(DatabaseManager.dbm.checkAccountInfo(savedNickname,"nickname","account")){
-                        DatabaseManager.dbm.tempUsername=savedUserName;
-                        DatabaseManager.dbm.tempPassword=savedPassword;
-                        DatabaseManager.dbm.tempNickname=savedNickname;
-                        DatabaseManager.dbm.saveNewAccountID(savedUserName, savedPassword, savedNickname);
-                        startGame();
-                    }else{
-                        jLabel5.setText("the nickname is already exist");
-                    }
+                String password =jPasswordField1.getText();
+                if(checkPassword(password)==true){
+                    savedPassword=password;
+                    ObjectStream.saveID(savedUserName,savedPassword,0);
+                    ObjectStream.closeSaveStream();
+                    startGame();
                 }else{
                     jLabel5.setText("Your password is too weak");
                 }
                 break;
             case 2://to Log in
-                savedPassword =jPasswordField1.getText();
-                if(!DatabaseManager.dbm.checkAccountInfo(savedPassword, "password", "account")){
+                String password2 =jPasswordField1.getText();
+                if(matchPassword(password2)==true){
                     startGame();
                 }else{
                     jLabel5.setText("Password is incorrect");
@@ -266,12 +239,9 @@ public class LoginScreen extends javax.swing.JFrame {
         logInState=2;
         DataLoader dl=new DataLoader();
         dl.loadData();
+        dl.loadData();
         
     }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,7 +251,6 @@ public class LoginScreen extends javax.swing.JFrame {
     private static int logInState=0;
     private static String savedUserName;
     private static String savedPassword;
-    private static String savedNickname;
     private static int savedScore;
     private static Path fileLocation;
     //Custom method
@@ -356,25 +325,23 @@ public class LoginScreen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginScreen_Backup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginScreen_Backup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginScreen_Backup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginScreen_Backup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                LoginScreen ls= new LoginScreen();
+                LoginScreen_Backup ls= new LoginScreen_Backup();
                 ls.setVisible(true);
                 ls.jPasswordField1.setVisible(false);
-                ls.jTextField2.setVisible(false);
-                ls.jLabel6.setVisible(false);
-                ls.jButton2.setVisible(false);
                 ls.setLocationRelativeTo(null);
                 //ls.jButton3.setVisible(false);//FOR TEST
             }
@@ -390,9 +357,7 @@ public class LoginScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

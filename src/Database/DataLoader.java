@@ -18,10 +18,17 @@ import java.sql.Statement;
  */
 public class DataLoader {
     
-    final static String DATABASE_URL = "jdbc:mysql://localhost:3306/tetris";
-    final static String USERNAME = "root";
-    final static String PASSWORD = "";
-    final String SELECT_QUERY = "SELECT Internal_ID, username, password";
+    private String DATABASE_URL = "jdbc:mysql://localhost:3306/tetris";
+    private String USERNAME = "root";
+    private String PASSWORD = "";
+    private String SELECT_QUERY = "SELECT internal_id, username, password, nickname, on_line FROM entity_account";
+    
+    public DataLoader(){//Initialize data
+        DATABASE_URL = "jdbc:mysql://localhost:3306/tetris";
+        USERNAME = "root";
+        PASSWORD = "";
+        SELECT_QUERY = "SELECT internal_id, username, password, nickname, on_line FROM entity_account";
+    }
     
     public void loadData(){
         
@@ -33,9 +40,23 @@ public class DataLoader {
             ResultSetMetaData metaData = resultSet.getMetaData();
             int numberOfColumns = metaData.getColumnCount();
             
-            for(int i = 1; i<=numberOfcolumns; i++){
-                
+            System.out.printf("Database Loaded%n%n");
+            for(int i = 1; i <= numberOfColumns; i++){
+                System.out.printf("%-8s\t", metaData.getColumnName(i));
             }
+            System.out.println();
+            
+            while(resultSet.next()){
+                for(int i = 1; i <= numberOfColumns; i++){
+                    System.out.printf("%-8s\t", resultSet.getObject(i));
+                }
+                System.out.println();
+            }
+            
+            int j = 0;
+            while(resultSet.next())j = resultSet.getInt(1)+1;
+            statement.executeUpdate("INSERT into entity_account values("+j+",'T','K','F',true)");
+            
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
         }
