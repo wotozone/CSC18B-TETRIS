@@ -36,6 +36,9 @@ public class Initializer {
     
     public static boolean start = false;
     public static boolean end = false;
+    public static boolean over = false;
+    
+    public static int decDelay=0;
     
     public Initializer(){
         initBlocks();

@@ -181,7 +181,7 @@ public class LoginScreen extends javax.swing.JFrame {
                 String name =jTextField1.getText();
                 if(checkID(name)==true){
                     savedUserName=name;
-                    if(DatabaseManager.dbm.checkAccountInfo(name,"username","account")==true){
+                    if(DatabaseManager.dbm.checkAccountInfo(name,"username","account")){
                         jTextField1.setEditable(false);
                         jLabel4.setText("Type your password");
                         jPasswordField1.setVisible(true);
@@ -227,6 +227,9 @@ public class LoginScreen extends javax.swing.JFrame {
             case 2://to Log in
                 savedPassword =jPasswordField1.getText();
                 if(!DatabaseManager.dbm.checkAccountInfo(savedPassword, "password", "account")){
+                    DatabaseManager.dbm.tempUsername=savedUserName;
+                    DatabaseManager.dbm.tempPassword=savedPassword;
+                    DatabaseManager.dbm.getInternalID();
                     startGame();
                 }else{
                     jLabel5.setText("Password is incorrect");
@@ -336,7 +339,7 @@ public class LoginScreen extends javax.swing.JFrame {
         //new StartScreen().setVisible(true);
         //new MainCanvas();
         
-        RoomScreen.rs = new RoomScreen();
+        RoomScreen1.rs.initializer();
         
         /*
         new Initializer();

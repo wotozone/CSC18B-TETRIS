@@ -46,7 +46,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     private int moveDelay;
     private int controlDelay=0;
     private int timeDelay=0;
-    private int decDelay=0;
+    //public int decDelay=0;
     
     private Timer dropDown;
 
@@ -102,11 +102,11 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                 }else{
                     controlDelay++;
                 }
-                if(INIT_TIME_DELAY>timeDelay+decDelay){
+                if(INIT_TIME_DELAY>timeDelay+Initializer.decDelay){
                     timeDelay++;
                 }else{
                     BlockManager.bm.setBlockMoveDown();
-                    if(decDelay<=750)decDelay++;
+                    if(Initializer.decDelay<=750)Initializer.decDelay++;
                     timeDelay=0;
                     //System.out.println("Delay: "+(1000-decDelay));
                 }
@@ -118,6 +118,9 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                     }
                     BlockManager.bm.soundOn=false;
                 }
+                if(Initializer.over){
+                    dropDown.cancel();
+                }
             }
         }, 0, 1);
     }
@@ -128,7 +131,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
         
         moveDelay = 0;
 
-        while(true) {
+        while(!Initializer.over) {
 
             Thread.sleep(1);//optimizing fps
             
@@ -257,8 +260,17 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                     new Initializer();
                     Initializer.start=true;
                     Initializer.end=false;
-                    decDelay=0;
+                    Initializer.decDelay=0;
                     BlockManager.bm.setNextBlockToDisplay();
+                }
+                break;
+            case KeyEvent.VK_ESCAPE:
+                if(Initializer.end){
+                    Initializer.over=true;
+                    soundManager.stopBackground();
+                    RoomScreen1.rs.returnLobby();
+                    this.removeAll();
+                    this.dispose();
                 }
                 break;
             } 

@@ -115,6 +115,14 @@ public class SoundManager {
         }
     }
     
+    public void stopBackground(){
+        try {
+            if(currentBGM!=null)currentBGM.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public void playLobyBackground(int type){
         try {
             switch(type){
@@ -124,7 +132,13 @@ public class SoundManager {
                     break;
                 case 2:
                     lobbyBGM = Applet.newAudioClip(soundLoader.LOBBY_REFEAT.toURL());
-                    lobbyBGM.play();
+                    lobbyBGM.loop();
+                    break;
+                case 3:
+                    lobbyBGM.stop();
+                    break;
+                case 4:
+                    lobbyBGM.loop();
                     break;
             }
         } catch (Exception e) {

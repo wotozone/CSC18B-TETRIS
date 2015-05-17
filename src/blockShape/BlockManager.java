@@ -5,6 +5,7 @@
  */
 package blockShape;
 
+import Database.DatabaseManager;
 import SoundPack.SoundManager;
 import tetris2.BlockStatus;
 import tetris2.Initializer;
@@ -183,6 +184,8 @@ public class BlockManager {
     
     private void isGameOver(){
         if(!checkInitPath()){//game over
+            if(DatabaseManager.dbm.highScore<score)
+            DatabaseManager.dbm.SaveData(Integer.toString(DatabaseManager.dbm.internal_id), "high_score", "account status", Integer.toString(score));
             Initializer.start=false;
             Initializer.end=true;
         }

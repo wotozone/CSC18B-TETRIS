@@ -18,16 +18,12 @@ import java.sql.Statement;
  */
 public class DataLoader {
     
-    private String DATABASE_URL = "jdbc:mysql://localhost:3306/tetris";
-    private String USERNAME = "root";
-    private String PASSWORD = "";
+    private String DATABASE_URL = "jdbc:mysql://71.95.58.77:3306/tetris";
+    private String USERNAME = "client";
+    private String PASSWORD = "hNBPuxGfAT8dyh75";
     private String SELECT_QUERY = "SELECT internal_id, username, password, nickname, on_line FROM entity_account";
     
     public DataLoader(){//Initialize data
-        DATABASE_URL = "jdbc:mysql://localhost:3306/tetris";
-        USERNAME = "root";
-        PASSWORD = "";
-        SELECT_QUERY = "SELECT internal_id, username, password, nickname, on_line FROM entity_account";
     }
     
     public void loadData(){
