@@ -22,6 +22,7 @@ public class SoundManager {
     public SoundLoader soundLoader;
     
     public AudioClip currentBGM;
+    public AudioClip lobbyBGM;
     
     public SoundManager() throws Exception{
         soundLoader=new SoundLoader();
@@ -109,6 +110,23 @@ public class SoundManager {
                     currentBGM = Applet.newAudioClip(soundLoader.BACKGROUND1.toURL());
             }
             currentBGM.loop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void playLobyBackground(int type){
+        try {
+            switch(type){
+                case 1:
+                    lobbyBGM = Applet.newAudioClip(soundLoader.LOBBY_INTRO.toURL());
+                    lobbyBGM.play();
+                    break;
+                case 2:
+                    lobbyBGM = Applet.newAudioClip(soundLoader.LOBBY_REFEAT.toURL());
+                    lobbyBGM.play();
+                    break;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

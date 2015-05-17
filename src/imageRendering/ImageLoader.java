@@ -17,6 +17,7 @@ public class ImageLoader{
     
     //FRAMES&BACKGROUNDS
     public final BufferedImage BACKGROUND;
+    public final BufferedImage LOBBY_BACKGROUND;
     public final BufferedImage OUTSIDE_FRAME;
     public final BufferedImage NEXTBLOCK_FRAME;
     public final BufferedImage HOLDBLOCK_FRAME;
@@ -57,10 +58,14 @@ public class ImageLoader{
     public final BufferedImage NUMBER_NINE;
     public final BufferedImage NUMBER_ZERO;
     
+    //LOBBY IMAGE
+    
+    
     
     public ImageLoader() throws Exception{
         //FRAMES
         BACKGROUND = ImageIO.read(new FileInputStream("Images/BACKGROUND.jpg"));
+        LOBBY_BACKGROUND = ImageIO.read(new FileInputStream("Images/Lobby_Background2.jpg"));
         OUTSIDE_FRAME = ImageIO.read(new FileInputStream("Images/OUTSIDEFRAME.jpg"));
         NEXTBLOCK_FRAME = ImageIO.read(new FileInputStream("Images/nextblock.jpg"));
         HOLDBLOCK_FRAME = ImageIO.read(new FileInputStream("Images/holdblock.jpg"));

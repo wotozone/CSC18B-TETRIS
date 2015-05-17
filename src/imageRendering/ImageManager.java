@@ -112,6 +112,10 @@ public class ImageManager{
         return imageLoader.BACKGROUND;
     }
     
+    public BufferedImage getLobbyBackgroundImage(){
+        return imageLoader.LOBBY_BACKGROUND;
+    }
+    
     public BufferedImage getOutsideFrame(){
         return imageLoader.OUTSIDE_FRAME;
     }

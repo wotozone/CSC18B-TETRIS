@@ -20,6 +20,10 @@ public class SoundLoader {
     public final File BACKGROUND3;
     public final File BACKGROUND4;
     
+    //LOBBY MUSIC
+    public final File LOBBY_INTRO;
+    public final File LOBBY_REFEAT;
+    
     //COMBO SOUNDS
     public final File COMBO1;
     public final File COMBO2;
@@ -44,6 +48,9 @@ public class SoundLoader {
         BACKGROUND3 = new File("Sounds/BACKGROUND3.wav");
         BACKGROUND4 = new File("Sounds/BACKGROUND4.wav");
         
+        LOBBY_INTRO = new File("Sounds/ROOM_INTRO.wav");
+        LOBBY_REFEAT = new File("Sounds/ROOM_REPEAT.wav");
+        
         COMBO1 = new File("Sounds/COMBO1.wav");
         COMBO2 = new File("Sounds/COMBO2.wav");
         COMBO3 = new File("Sounds/COMBO3.wav");
@@ -59,6 +66,7 @@ public class SoundLoader {
         COMBO900 = new File("Sounds/COMBO900.wav");
         
         WOOHOO = new File("Sounds/WOOHOO.wav");
+        
     }
     
 }

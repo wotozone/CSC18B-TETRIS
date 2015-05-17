@@ -3,23 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tetris2.threads;
-
-import blockShape.BlockManager;
+package tetris2;
 
 /**
  *
  * @author Tae
  */
-public class DropDownThread extends Thread {
-    
-    public DropDownThread() {
-    }
-    
-    
-    
-    public void run(){
-        
-    }
+public class RoomManager {
     
 }

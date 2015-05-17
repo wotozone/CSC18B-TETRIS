@@ -264,13 +264,13 @@ public class LoginScreen extends javax.swing.JFrame {
         jPasswordField1.setVisible(true);
         //jLabel5.setText("Password must include at least one numerical, special, and capital letter");
         logInState=2;
-        DataLoader dl=new DataLoader();
-        dl.loadData();
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
+        System.out.println(evt.getActionCommand());
+        jButton1ActionPerformed(evt);
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
@@ -335,9 +335,15 @@ public class LoginScreen extends javax.swing.JFrame {
         //this.setVisible(false);
         //new StartScreen().setVisible(true);
         //new MainCanvas();
+        
+        RoomScreen.rs = new RoomScreen();
+        
+        /*
         new Initializer();
         Thread t = new Thread(new Testing());
         t.start();
+        */
+
         //Thread d = new Thread(new DropDownThread());
         //d.start();
     }

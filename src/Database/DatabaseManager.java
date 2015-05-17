@@ -22,7 +22,7 @@ public class DatabaseManager {
     //select query
     final static String ACCOUNT_FULL ="SELECT internal_id, username, password, nickname, on_line FROM entity_account";
     final static String ACCOUNT_STATUS_FULL ="SELECT internal_id, game_played, game_win, high_score, level, experience FROM entity_account_status";
-    final static String GAME_STATUS_FULL ="SELECT internal_id, blockstatus, new_state, combo, attack, knockdown, in_game, room_id, enemy_internal_id FROM entity_game_status";
+    final static String GAME_STATUS_FULL ="SELECT internal_id, blockstate, new_state, combo, attack, knockdown, in_game, room_id, enemy_internal_id FROM entity_game_status";
     final static String ROOM_FULL ="SELECT room_id, player1_id, player2_id, timer FROM entity_room";
     
     final static String ACCOUNT_META =" FROM entity_account";
@@ -143,16 +143,25 @@ public class DatabaseManager {
             while(resultSet.next())lastPrimaryKey = resultSet.getInt(1)+1;
             System.out.println(lastPrimaryKey);
             
-            statement.executeUpdate("INSERT into entity_account values("+lastPrimaryKey+",'"+username+"','"+password+"','"+nickname+"',false)");
+            statement.executeUpdate("INSERT into entity_account values("
+                    +lastPrimaryKey+",'"
+                    +username+"','"
+                    +password+"','"
+                    +nickname+"',false)");
+            statement.executeUpdate("INSERT into entity_account_status values("
+                    +lastPrimaryKey+",0,0,0,1,0)");
+            statement.executeUpdate("INSERT into entity_game_status values("
+                    +lastPrimaryKey+",'',false,0,0,0,false,0,0)");
             
             
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
         }
         
-        loadData("");
+        loadData(ACCOUNT_FULL);
+        loadData(ACCOUNT_STATUS_FULL);
+        loadData(GAME_STATUS_FULL);
     }
-    
     
     
     
@@ -224,7 +233,7 @@ public class DatabaseManager {
         try(
                 Connection connection = DriverManager.getConnection(server_url, server_username, server_password);
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(server_select_query))
+                ResultSet resultSet = statement.executeQuery(str))
         {
             ResultSetMetaData metaData = resultSet.getMetaData();
             int numberOfColumns = metaData.getColumnCount();
