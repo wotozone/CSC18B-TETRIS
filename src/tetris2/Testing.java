@@ -59,7 +59,8 @@ public class Testing extends JFrame implements Runnable, KeyListener{
         this.setSize(Initializer.WINDOW_WIDTH, Initializer.WINDOW_HEIGHT); 
         this.setTitle("TETRIS");
         this.setResizable(false);  
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);  
         this.setLocationRelativeTo(null);
 

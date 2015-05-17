@@ -106,6 +106,18 @@ public class DatabaseManager {
         clearData();
     }
     
+    public boolean checkConnection(){
+        boolean connect=false;
+        try(Connection connection = DriverManager.getConnection(server_url, server_username, server_password)){
+            connect=true;
+        }catch (SQLException sqlException){
+            System.out.println("SQLException: " + sqlException.getMessage());
+            System.out.println("SQLState: " + sqlException.getSQLState());
+            System.out.println("VendorError: " + sqlException.getErrorCode());
+        }
+        return connect;
+    }
+    
     public void changeServerAddress(String url, String username, String password){
         server_url=url;
         server_username=username;
@@ -339,6 +351,32 @@ public class DatabaseManager {
             sqlException.printStackTrace();
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     private String getEntityName(int meta){
         switch(meta){

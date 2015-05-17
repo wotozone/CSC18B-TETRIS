@@ -208,6 +208,8 @@ public class RoomScreen1 extends javax.swing.JFrame {
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
+        text.append("\n   "+DatabaseManager.dbm.tempNickname+": "+evt.getActionCommand());
+        jTextArea1.setText(text.toString());
         jTextField1.setText("");
     }//GEN-LAST:event_jTextField1ActionPerformed
 
@@ -221,6 +223,8 @@ public class RoomScreen1 extends javax.swing.JFrame {
     public boolean soundOn=true;
     
     public String version="Version 1.0.17";
+    
+    public StringBuffer text;
     
     private int initalDelay=0;
     
@@ -273,10 +277,11 @@ public class RoomScreen1 extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         soundManager.playLobyBackground(1);
-        jTextArea1.setText("   Hi "
+        text= new StringBuffer("   Hi "
                 +DatabaseManager.dbm.tempNickname
-                +"!\n   Welcome to the world of TETRIS COMBO!\n   This game is hosted by "
+                +"!\n   Welcome to the world of TETRIS COMBO!\n   This server is hosted by "
                 +DatabaseManager.dbm.server_description);
+        jTextArea1.setText(text.toString());
         jLabel4.setText(version);
         tempTimer();
     }
@@ -303,7 +308,7 @@ public class RoomScreen1 extends javax.swing.JFrame {
                     t.cancel();
                 }
             }
-        }, 0, 5750);
+        }, 0, 5700);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

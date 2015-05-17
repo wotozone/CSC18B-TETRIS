@@ -62,6 +62,7 @@ public class LoginScreen extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Type your Account");
 
         jButton1.setText("Log in");
@@ -101,16 +102,13 @@ public class LoginScreen extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Set your nickname");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(239, 239, 239)
-                .addComponent(jLabel2)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -122,6 +120,7 @@ public class LoginScreen extends javax.swing.JFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
                 .addGap(143, 143, 143))
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -131,11 +130,12 @@ public class LoginScreen extends javax.swing.JFrame {
                         .addGap(193, 193, 193)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(245, 245, 245)
-                        .addComponent(jLabel6)))
+                            .addComponent(jLabel1))))
                 .addContainerGap(152, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -351,6 +351,9 @@ public class LoginScreen extends javax.swing.JFrame {
         //d.start();
     }
     
+    private void serverUnavalable(){
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -386,6 +389,22 @@ public class LoginScreen extends javax.swing.JFrame {
                 ls.jButton2.setVisible(false);
                 ls.setLocationRelativeTo(null);
                 //ls.jButton3.setVisible(false);//FOR TEST
+                if(!DatabaseManager.dbm.checkConnection()){                 
+                    ls.jButton1.setVisible(false);
+                    ls.jButton2.setVisible(false);
+                    ls.jButton3.setVisible(false);
+                    ls.jLabel1.setVisible(false);
+                    ls.jLabel2.setVisible(false);
+                    ls.jLabel3.setVisible(false);
+                    ls.jLabel4.setVisible(false);
+                    ls.jLabel5.setVisible(false);
+                    ls.jLabel6.setVisible(true);
+                    ls.jPasswordField1.setVisible(false);
+                    ls.jTextField1.setVisible(false);
+                    ls.jTextField2.setVisible(false);
+                    ls.jLabel6.setFont(new java.awt.Font("Arial", 1, 30));
+                    ls.jLabel6.setText("Server is currently unavailable");
+                }
             }
         });
     }
