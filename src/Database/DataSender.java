@@ -32,9 +32,9 @@ public class DataSender {
                 if(DatabaseManager.dbm.internal_id!=(int) resultSet.getObject(1)){
                     if((boolean) resultSet.getObject(3)==false){
                         DatabaseManager.dbm.saveData(Integer.toString((int) resultSet.getObject(1)), "chat_update", "chat", "true");
-                        DatabaseManager.dbm.saveData(Integer.toString((int) resultSet.getObject(1)), "manager", "chat", text);
+                        DatabaseManager.dbm.saveData(Integer.toString((int) resultSet.getObject(1)), "chat_text", "chat", "'"+text+"'");
                     }else{
-                        DatabaseManager.dbm.saveData(Integer.toString((int) resultSet.getObject(1)), "chat_text", "chat", (String)resultSet.getObject(2)+text);
+                        DatabaseManager.dbm.saveData(Integer.toString((int) resultSet.getObject(1)), "chat_text", "chat", "'"+(String)resultSet.getObject(2)+text+"'");
                     }
                 }
             }
