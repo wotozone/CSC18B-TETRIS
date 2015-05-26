@@ -185,7 +185,7 @@ public class BlockManager {
     private void isGameOver(){
         if(!checkInitPath()){//game over
             if(DatabaseManager.dbm.highScore<score)
-            DatabaseManager.dbm.SaveData(Integer.toString(DatabaseManager.dbm.internal_id), "high_score", "account status", Integer.toString(score));
+            DatabaseManager.dbm.saveData(Integer.toString(DatabaseManager.dbm.internal_id), "high_score", "account status", Integer.toString(score));
             Initializer.start=false;
             Initializer.end=true;
         }

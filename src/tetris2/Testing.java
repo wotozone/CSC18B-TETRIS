@@ -125,30 +125,32 @@ public class Testing extends JFrame implements Runnable, KeyListener{
             }
         }, 0, 1);
     }
- public void run() {
+    
+    
+    public void run() {
 
-    try {
+       try {
 
-        
-        moveDelay = 0;
 
-        while(!Initializer.over) {
+           moveDelay = 0;
 
-            Thread.sleep(1);//optimizing fps
-            
-            if(Initializer.start) {
-                if(moveDelay>=5){//move per 0.1sec
-                    //keyControl();
-                }else{
-                    moveDelay+=1;
-                }
-            }
-            draw();
-        }  
-        }catch(Exception e){
-            e.printStackTrace(); 
-    } 
-}
+           while(!Initializer.over) {
+
+               Thread.sleep(1);//optimizing fps
+
+               if(Initializer.start) {
+                   if(moveDelay>=5){//move per 0.1sec
+                       //keyControl();
+                   }else{
+                       moveDelay+=1;
+                   }
+               }
+               draw();
+           }  
+           }catch(Exception e){
+               e.printStackTrace(); 
+       } 
+   }
 
 
     public void draw() {

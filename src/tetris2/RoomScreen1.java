@@ -5,6 +5,8 @@
  */
 package tetris2;
 
+import Database.DataReceiver;
+import Database.DataSender;
 import Database.DatabaseManager;
 import SoundPack.SoundManager;
 import imageRendering.ImageManager;
@@ -208,6 +210,7 @@ public class RoomScreen1 extends javax.swing.JFrame {
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
+        dataSender.setChatText("\n   "+DatabaseManager.dbm.tempNickname+": "+evt.getActionCommand());
         text.append("\n   "+DatabaseManager.dbm.tempNickname+": "+evt.getActionCommand());
         jTextArea1.setText(text.toString());
         jTextField1.setText("");
@@ -219,6 +222,7 @@ public class RoomScreen1 extends javax.swing.JFrame {
     
     public ImageManager imageManager;
     public SoundManager soundManager;
+    public DataSender dataSender;
     
     public boolean soundOn=true;
     
@@ -229,11 +233,18 @@ public class RoomScreen1 extends javax.swing.JFrame {
     private int initalDelay=0;
     
     public Thread game;
+    public Thread serverReceiver;
     
     public void returnLobby(){
         setMenuVisible(true);
         if(soundOn)soundManager.playLobyBackground(4);
         loadInfo();
+    }
+    
+    public void receiveChat(){
+        text.append(DatabaseManager.dbm.chat_text);
+        DatabaseManager.dbm.chat_text=null;
+        jTextArea1.setText(text.toString());
     }
     
     private void setMenuVisible(boolean visible){
@@ -273,6 +284,7 @@ public class RoomScreen1 extends javax.swing.JFrame {
         try {
             imageManager = new ImageManager();
             soundManager = new SoundManager();
+            dataSender = new DataSender();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -305,6 +317,8 @@ public class RoomScreen1 extends javax.swing.JFrame {
                 if(initalDelay>1){
                     setMenuVisible(true);
                     soundManager.playLobyBackground(2);
+                    serverReceiver=new Thread(new DataReceiver());
+                    serverReceiver.start();
                     t.cancel();
                 }
             }

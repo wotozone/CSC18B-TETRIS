@@ -23,16 +23,19 @@ public class DatabaseManager {
     final static String ACCOUNT_FULL ="SELECT internal_id, username, password, nickname, on_line FROM entity_account";
     final static String ACCOUNT_STATUS_FULL ="SELECT internal_id, game_played, game_win, high_score, level, experience FROM entity_account_status";
     final static String GAME_STATUS_FULL ="SELECT internal_id, blockstate, new_state, combo, attack, knockdown, in_game, room_id, enemy_internal_id FROM entity_game_status";
+    final static String CHAT_FULL ="SELECT internal_id, chat_id, manager, chat_text, latency, chat_update FROM entity_chat";
     final static String ROOM_FULL ="SELECT room_id, player1_id, player2_id, timer FROM entity_room";
     
     final static String ACCOUNT_META =" FROM entity_account";
     final static String ACCOUNT_STATUS_META =" FROM entity_account_status";
     final static String GAME_STATUS_META =" FROM entity_game_status";
+    final static String CHAT_META =" FROM entity_chat";
     final static String ROOM_META =" FROM entity_room";
     
     final static String ACCOUNT_NAME ="entity_account";
     final static String ACCOUNT_STATUS_NAME ="entity_account_status";
     final static String GAME_STATUS_NAME ="entity_game_status";
+    final static String CHAT_NAME ="entity_chat";
     final static String ROOM_NAME ="entity_room";
     
     final static String ENUM_LEVEL ="SELECT enum_level_id, description FROM entity_room";
@@ -83,6 +86,15 @@ public class DatabaseManager {
     public boolean in_game;
     //public int room_id;
     
+    //Data for chat
+    //public int internal_id;
+    public int chat_id;
+    public boolean manager;
+    public String chat_text;
+    public boolean latency;
+    public boolean chat_update;
+    //public int room_id;
+    
     //Data for room
     public int room_id;
     public int player1_id;
@@ -115,6 +127,7 @@ public class DatabaseManager {
             System.out.println("SQLState: " + sqlException.getSQLState());
             System.out.println("VendorError: " + sqlException.getErrorCode());
         }
+        loadData("SELECT internal_id, username, nickname FROM entity_account");
         return connect;
     }
     
@@ -302,6 +315,15 @@ public class DatabaseManager {
                 case 7:in_game=(boolean) data;
                 default:break;
             }
+        }else if(str==CHAT_FULL||str==CHAT_META){
+            switch(column){
+                case 2:chat_id=(int) data;
+                case 3:manager=(boolean) data;
+                case 4:chat_text=(String) data;
+                case 5:latency=(boolean) data;
+                case 6:chat_update=(boolean) data;
+                default:break;
+            }
         }else if(str==ROOM_FULL||str==ROOM_META){
             switch(column){
                 case 1:room_id=(int) data;
@@ -331,7 +353,7 @@ public class DatabaseManager {
     
     
     
-    public void SaveData(String id,String metatype,String datatype,String value){
+    public void saveData(String id,String metatype,String datatype,String value){
         System.out.println("SELECT "+datatype+getPartMetaData(datatype));
         System.out.println(ACCOUNT_FULL);
         try(
@@ -354,6 +376,27 @@ public class DatabaseManager {
     
     
     
+    
+    public void deleteData(String id,String datatype){
+        System.out.println("SELECT "+datatype+getPartMetaData(datatype));
+        System.out.println(ACCOUNT_FULL);
+        try(
+                Connection connection = DriverManager.getConnection(server_url, server_username, server_password);
+                Statement statement = connection.createStatement())
+        {
+            System.out.printf("Database Loaded: "+getPartMetaData(datatype)+" - ");
+            System.out.println("delete "+id);
+            
+            System.out.println("DELETE"+getPartMetaData(datatype)+" where internal_id="+ id);
+            if(statement.executeUpdate("DELETE"+getPartMetaData(datatype)+" where internal_id="+ id)==0){
+                System.out.println("Unable to delete data");
+            }else{
+                System.out.println("Successfuly deleted");
+            }
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
     
     
     
@@ -387,6 +430,8 @@ public class DatabaseManager {
             case 3:
                 return GAME_STATUS_NAME;
             case 4:
+                return CHAT_NAME;
+            case 5:
                 return ROOM_NAME;
             default:
                 return null;
@@ -397,6 +442,7 @@ public class DatabaseManager {
         if(meta.equalsIgnoreCase("account"))return ACCOUNT_NAME;
         else if(meta.equalsIgnoreCase("account status"))return ACCOUNT_STATUS_NAME;
         else if(meta.equalsIgnoreCase("game status"))return GAME_STATUS_NAME;
+        else if(meta.equalsIgnoreCase("chat"))return CHAT_NAME;
         else if(meta.equalsIgnoreCase("room"))return ROOM_NAME;
         return null;
     }
@@ -410,6 +456,8 @@ public class DatabaseManager {
             case 3:
                 return GAME_STATUS_META;
             case 4:
+                return CHAT_META;
+            case 5:
                 return ROOM_META;
             default:
                 return null;
@@ -420,6 +468,7 @@ public class DatabaseManager {
         if(meta.equalsIgnoreCase("account"))return ACCOUNT_META;
         else if(meta.equalsIgnoreCase("account status"))return ACCOUNT_STATUS_META;
         else if(meta.equalsIgnoreCase("game status"))return GAME_STATUS_META;
+        else if(meta.equalsIgnoreCase("chat"))return CHAT_META;
         else if(meta.equalsIgnoreCase("room"))return ROOM_META;
         return null;
     }
@@ -432,6 +481,8 @@ public class DatabaseManager {
             case 3:
                 return GAME_STATUS_FULL;
             case 4:
+                return CHAT_FULL;
+            case 5:
                 return ROOM_FULL;
             default:
                 return null;
@@ -468,6 +519,14 @@ public class DatabaseManager {
         knockdown=0;
         in_game=false;
         //public int room_id;
+        
+        //Data for chat
+        //public int internal_id;
+        chat_id=0;
+        manager=false;
+        String chat_text=null;
+        latency=false;
+        chat_update=false;
 
         //Data for room
         room_id=0;
@@ -511,6 +570,15 @@ public class DatabaseManager {
                 break;
                 
             case 4:
+                //Data for chat
+                //public int internal_id;
+                chat_id=0;
+                manager=false;
+                String chat_text=null;
+                latency=false;
+                chat_update=false;
+                
+            case 5:
                 //Data for room
                 room_id=0;
                 player1_id=0;
@@ -519,7 +587,7 @@ public class DatabaseManager {
                 timer=0;
                 break;
                 
-            case 5:
+            case 6:
                 //Data for enum_level
                 enum_level_id=0;
                 levelDescription="";
