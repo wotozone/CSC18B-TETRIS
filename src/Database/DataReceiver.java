@@ -23,6 +23,7 @@ public class DataReceiver extends Thread{
     private Thread chatHost;
     
     private boolean host=false;
+    private int host_id=0;
     
     private int host_timeout=0;
     
@@ -42,6 +43,7 @@ public class DataReceiver extends Thread{
         }catch(Exception e){
             e.printStackTrace(); 
         } 
+        RoomScreen1.rs.receiveChat("Disconected from the server");
     }
     
     public void joinChat(){
@@ -90,6 +92,8 @@ public class DataReceiver extends Thread{
             }else if(lastPrimaryKey>200){
                 //add later
             }
+            RoomScreen1.rs.currentUser=lastPrimaryKey;
+            RoomScreen1.rs.receiveChat(lastPrimaryKey+" players are playing game");
             
             lastPrimaryKey=DatabaseManager.dbm.internal_id;
             statement.executeUpdate("INSERT into entity_chat values("
@@ -116,13 +120,14 @@ public class DataReceiver extends Thread{
         {
             ResultSetMetaData metaData = resultSet.getMetaData();
             int numberOfColumns = metaData.getColumnCount();
+            int userNum=0;
             
             System.out.printf(".");
             
             connected=false;
             while(resultSet.next()){
-                if(!host||(boolean) resultSet.getObject(2)==true){
-                    if((boolean) resultSet.getObject(4)==true){
+                if(!host&&(boolean) resultSet.getObject(2)==true){
+                    if((int) resultSet.getObject(1)==host_id&&(boolean) resultSet.getObject(4)==true){
                         if(host_timeout>300){
                                 DatabaseManager.dbm.deleteData(Integer.toString((int) resultSet.getObject(1)), "chat");
                                 DatabaseManager.dbm.saveData(Integer.toString(DatabaseManager.dbm.internal_id), "manager", "chat", "true");
@@ -133,6 +138,7 @@ public class DataReceiver extends Thread{
                             host_timeout++;
                         }
                     }else{
+                        host_id=(int) resultSet.getObject(1);
                         host_timeout=0;
                     }
                 }
@@ -143,12 +149,14 @@ public class DataReceiver extends Thread{
                     }
                     connected=true;
                 }
+                userNum++;
             }
-            
+            RoomScreen1.rs.currentUser=userNum;
             
         }catch (SQLException sqlException){
             sqlException.printStackTrace();
-            return false;
+            connected=false;
+            return connected;
         }
         return connected;
     }

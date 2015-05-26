@@ -11,10 +11,11 @@
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/tetris2/StartScreen.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/imageRendering/DrawImage.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/tetris2/threads/KeyActivatingThread.java</file>
-            <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/imageRendering/ImageManager.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/tetris2/threads/DropDownThread.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/blockShape/BlockInfo.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/imageRendering/ImageLoader.java2</file>
+            <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/Database/ChatHost.java</file>
+            <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/imageRendering/ImageManager.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/blockShape/ZBlock.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/tetris2/BlockStatus.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/SoundPack/SoundLoader.java</file>
@@ -25,8 +26,8 @@
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/tetris2/Testing.java1111</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/tetris2/NextBlocks.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/blockShape/StickBlock.java</file>
-            <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/Database/DataSender.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/tetris2/RoomScreen.java</file>
+            <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/Database/DataSender.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/tetris2/UserInfo.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/tetris2/LoginScreen_Backup.java</file>
             <file>file:/C:/Users/Tae/Documents/GitHub/CSC18B-TETRIS/src/Database/DataLoader.java</file>

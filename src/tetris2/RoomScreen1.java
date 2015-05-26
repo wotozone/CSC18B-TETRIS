@@ -226,7 +226,9 @@ public class RoomScreen1 extends javax.swing.JFrame {
     
     public boolean soundOn=true;
     
-    public String version="Version 1.0.17";
+    public int currentUser=0;
+    
+    public String version="Version 1.1.26";
     
     public StringBuffer text;
     
@@ -243,6 +245,12 @@ public class RoomScreen1 extends javax.swing.JFrame {
     
     public void receiveChat(){
         text.append(DatabaseManager.dbm.chat_text);
+        DatabaseManager.dbm.chat_text=null;
+        jTextArea1.setText(text.toString());
+    }
+    
+    public void receiveChat(String str){
+        text.append("\n   "+str);
         DatabaseManager.dbm.chat_text=null;
         jTextArea1.setText(text.toString());
     }

@@ -113,7 +113,7 @@ public class DatabaseManager {
         server_username = "client";
         server_password = "hNBPuxGfAT8dyh75";;
         server_select_query = ACCOUNT_FULL;
-        server_description = "TaeYoun's private server";
+        server_description = "Tae's testing DB";
         user_id=0;
         clearData();
     }
