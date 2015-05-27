@@ -55,6 +55,7 @@ public class DataReceiver extends Thread{
             int lastPrimaryKey = 0;
             int chatId=1;
             int intId=0;
+            boolean currentManager=false;
             boolean manager=false;
             boolean chatNum[] = new boolean[200];
             for(int i=0;i<200;i++){
@@ -72,6 +73,7 @@ public class DataReceiver extends Thread{
                 if((int) resultSet.getObject(2)<=200){//just in case
                     chatNum[(int) resultSet.getObject(2)-1]=false;
                 }
+                if((boolean) resultSet.getObject(3))currentManager=true;
                 lastPrimaryKey++;
                 intId=(int) resultSet.getObject(1);
             }
@@ -83,7 +85,9 @@ public class DataReceiver extends Thread{
                 }
             }
             
-            if(lastPrimaryKey==0){
+            if(!currentManager){
+                manager=true;
+            }else if(lastPrimaryKey==0){
                 manager=true;
             }else if(lastPrimaryKey==1){
                 DatabaseManager.dbm.saveData(Integer.toString(intId), "manager", "chat", "false");
@@ -99,7 +103,7 @@ public class DataReceiver extends Thread{
             statement.executeUpdate("INSERT into entity_chat values("
                     +lastPrimaryKey+",'"
                     +chatId+"',"
-                    +manager+",null,true,false)");
+                    +manager+",'',true,false)");
             
             if(manager){
                 host=true;
@@ -136,6 +140,7 @@ public class DataReceiver extends Thread{
                                 chatHost.start();
                         }else{
                             host_timeout++;
+                            System.out.println(host_timeout);
                         }
                     }else{
                         host_id=(int) resultSet.getObject(1);

@@ -109,7 +109,7 @@ public class DatabaseManager {
         server_username = "root";
         server_password = "";
         */
-        server_url = "jdbc:mysql://71.95.58.77:3306/tetris";
+        server_url = "jdbc:mysql://71.95.58.77:3306/tetris?useUnicode=true&characterEncoding=utf8";
         server_username = "client";
         server_password = "hNBPuxGfAT8dyh75";;
         server_select_query = ACCOUNT_FULL;
@@ -211,9 +211,9 @@ public class DatabaseManager {
             System.out.printf("Database Loaded: "+getPartMetaData("account"));
             
             while(resultSet.next())lastPrimaryKey = resultSet.getInt(1)+1;
-            System.out.println(lastPrimaryKey);
+            System.out.println("LP_"+lastPrimaryKey);
             
-            lastPrimaryKey=internal_id;
+            internal_id=lastPrimaryKey;
             statement.executeUpdate("INSERT into entity_account values("
                     +lastPrimaryKey+",'"
                     +username+"','"
@@ -223,6 +223,8 @@ public class DatabaseManager {
                     +lastPrimaryKey+",0,0,0,1,0)");
             statement.executeUpdate("INSERT into entity_game_status values("
                     +lastPrimaryKey+",'',false,0,0,0,false,0,0)");
+            
+            //getInternalID();
             
             
         }catch (SQLException sqlException){
@@ -291,45 +293,46 @@ public class DatabaseManager {
     public void getData(String str,int column,Object data){
         if(str==ACCOUNT_FULL||str==ACCOUNT_META){
             switch(column){
-                case 2:username=(String) data;
-                case 3:password=(String) data;
-                case 4:on_line=(boolean) data;
+                case 2:username=(String) data;break;
+                case 3:password=(String) data;break;
+                case 4:nickname=(String) data;break;
+                case 5:on_line=(boolean) data;break;
                 default:break;
             }
         }else if(str==ACCOUNT_STATUS_FULL||str==ACCOUNT_STATUS_META){
             switch(column){
-                case 2:gamePlayed=(int) data;
-                case 3:gameWin=(int) data;
-                case 4:highScore=(int) data;
-                case 5:level=(int) data;
-                case 6:experience=(int) data;
+                case 2:gamePlayed=(int) data;break;
+                case 3:gameWin=(int) data;break;
+                case 4:highScore=(int) data;break;
+                case 5:level=(int) data;break;
+                case 6:experience=(int) data;break;
                 default:break;
             }
         }else if(str==GAME_STATUS_FULL||str==GAME_STATUS_META){
             switch(column){
-                case 2:blockState=(String) data;
-                case 3:newState=(boolean) data;
-                case 4:combo=(int) data;
-                case 5:attack=(int) data;
-                case 6:knockdown=(int) data;
-                case 7:in_game=(boolean) data;
+                case 2:blockState=(String) data;break;
+                case 3:newState=(boolean) data;break;
+                case 4:combo=(int) data;break;
+                case 5:attack=(int) data;break;
+                case 6:knockdown=(int) data;break;
+                case 7:in_game=(boolean) data;break;
                 default:break;
             }
         }else if(str==CHAT_FULL||str==CHAT_META){
             switch(column){
-                case 2:chat_id=(int) data;
-                case 3:manager=(boolean) data;
-                case 4:chat_text=(String) data;
-                case 5:latency=(boolean) data;
-                case 6:chat_update=(boolean) data;
+                case 2:chat_id=(int) data;break;
+                case 3:manager=(boolean) data;break;
+                case 4:chat_text=(String) data;break;
+                case 5:latency=(boolean) data;break;
+                case 6:chat_update=(boolean) data;break;
                 default:break;
             }
         }else if(str==ROOM_FULL||str==ROOM_META){
             switch(column){
-                case 1:room_id=(int) data;
-                case 3:player1_id=(int) data;
-                case 4:player2_id=(int) data;
-                case 5:timer=(int) data;
+                case 1:room_id=(int) data;break;
+                case 3:player1_id=(int) data;break;
+                case 4:player2_id=(int) data;break;
+                case 5:timer=(int) data;break;
                 default:break;
             }
         }
@@ -491,6 +494,14 @@ public class DatabaseManager {
     
     
     public void clearData(){
+        System.out.println("######################################");
+        System.out.println("##                                  ##");
+        System.out.println("##            WARNING!!!            ##");
+        System.out.println("##                                  ##");
+        System.out.println("##        ALL DATA HAS WIPED        ##");
+        System.out.println("##                                  ##");
+        System.out.println("##                                  ##");
+        System.out.println("######################################");
         //Data for account
         internal_id=0;
         username="";
@@ -537,6 +548,15 @@ public class DatabaseManager {
     }
     
     public void clearData(int meta){
+        System.out.println("######################################");
+        System.out.println("##                                  ##");
+        System.out.println("##            WARNING!!!            ##");
+        System.out.println("##                                  ##");
+        System.out.println("##           DATA-"+meta+" WIPED           ##");
+        System.out.println("##                                  ##");
+        System.out.println("##                                  ##");
+        System.out.println("######################################");
+        System.out.println("INTERNAL_ID: "+internal_id);
         switch(meta){
             case 1:
                 //Data for account
@@ -577,6 +597,7 @@ public class DatabaseManager {
                 String chat_text=null;
                 latency=false;
                 chat_update=false;
+                break;
                 
             case 5:
                 //Data for room
