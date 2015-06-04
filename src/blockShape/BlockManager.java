@@ -9,6 +9,7 @@ import Database.DatabaseManager;
 import SoundPack.SoundManager;
 import tetris2.BlockStatus;
 import tetris2.Initializer;
+import tetris2.LoginScreen;
 import tetris2.NextBlocks;
 
 /**
@@ -184,7 +185,9 @@ public class BlockManager {
     
     private void isGameOver(){
         if(!checkInitPath()){//game over
-            if(DatabaseManager.dbm.highScore<score)
+            if(LoginScreen.offline){
+                
+            }else if(DatabaseManager.dbm.highScore<score)
             DatabaseManager.dbm.saveData(Integer.toString(DatabaseManager.dbm.internal_id), "high_score", "account status", Integer.toString(score));
             Initializer.start=false;
             Initializer.end=true;

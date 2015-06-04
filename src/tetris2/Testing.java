@@ -60,7 +60,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
         this.setTitle("TETRIS");
         this.setResizable(false);  
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        if(LoginScreen.offline)this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);  
         this.setLocationRelativeTo(null);
 
@@ -268,7 +268,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                 }
                 break;
             case KeyEvent.VK_ESCAPE:
-                if(Initializer.end){
+                if(Initializer.end&&!LoginScreen.offline){
                     Initializer.over=true;
                     soundManager.stopBackground();
                     RoomScreen1.rs.returnLobby();
