@@ -8,10 +8,13 @@ package tetris2;
 import Database.DataReceiver;
 import Database.DataSender;
 import Database.DatabaseManager;
+import Server.ClientConnector;
+import Server.ClientSender;
 import SoundPack.SoundManager;
 import imageRendering.ImageManager;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -210,9 +213,15 @@ public class RoomScreen1 extends javax.swing.JFrame {
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-        dataSender.setChatText("\n   "+DatabaseManager.dbm.tempNickname+": "+evt.getActionCommand());
-        text.append("\n   "+DatabaseManager.dbm.tempNickname+": "+evt.getActionCommand());
-        jTextArea1.setText(text.toString());
+        //dataSender.setChatText("\n   "+DatabaseManager.dbm.tempNickname+": "+evt.getActionCommand());
+        //text.append("\n   "+DatabaseManager.dbm.tempNickname+": "+evt.getActionCommand());
+        //ClientConnector.cc.clientSender.receiveText(evt.getActionCommand());
+        sendingText=evt.getActionCommand();
+        ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name);
+        ClientConnector.cc.clientSender.text=evt.getActionCommand();
+        ClientConnector.cc.clientSender.start();
+        //ClientConnector.cc.clientSender.receive=true;
+        //jTextArea1.setText(text.toString());
         jTextField1.setText("");
     }//GEN-LAST:event_jTextField1ActionPerformed
 
@@ -223,6 +232,8 @@ public class RoomScreen1 extends javax.swing.JFrame {
     public ImageManager imageManager;
     public SoundManager soundManager;
     public DataSender dataSender;
+    
+    public String sendingText=null;
     
     public boolean soundOn=true;
     
@@ -251,7 +262,8 @@ public class RoomScreen1 extends javax.swing.JFrame {
     
     public void receiveChat(String str){
         text.append("\n   "+str);
-        DatabaseManager.dbm.chat_text=null;
+        //text.append(str);
+        //DatabaseManager.dbm.chat_text=null;
         jTextArea1.setText(text.toString());
     }
     
@@ -325,8 +337,9 @@ public class RoomScreen1 extends javax.swing.JFrame {
                 if(initalDelay>1){
                     setMenuVisible(true);
                     soundManager.playLobyBackground(2);
-                    serverReceiver=new Thread(new DataReceiver());
-                    serverReceiver.start();
+                    //serverReceiver=new Thread(new DataReceiver());
+                    //serverReceiver.start();
+                    ClientConnector.cc.connectToChat();
                     t.cancel();
                 }
             }

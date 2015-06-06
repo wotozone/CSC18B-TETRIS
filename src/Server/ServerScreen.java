@@ -134,15 +134,21 @@ public class ServerScreen extends javax.swing.JFrame {
     
     //SERVER ON
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
-        if(serverStatus)serverStatus=false;
+        if(serverStatus){
+            serverStatus=false;
+        }
         else{
             serverStatus=true;
+            server = new ServerManager();
+            server.start();
         }
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     public static ServerScreen ss = new ServerScreen();
     
     public boolean serverStatus=false;
+
+    public ServerManager server;
     
     private StringBuffer text;
     

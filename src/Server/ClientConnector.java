@@ -20,9 +20,13 @@ public class ClientConnector {
     
     public static ClientConnector cc = new ClientConnector();
     
-    private String name;
-    private Socket socket;
-    private String serverIp = "127.0.0.1";
+    public ClientReceiver clientReceiver;
+    public ClientSender clientSender;
+    
+    public String name;
+    public Socket socket;
+    public String serverIp = "127.0.0.1";
+    public boolean first=true;
     
     public ClientConnector(){
         serverIp = "127.0.0.1";
@@ -31,6 +35,8 @@ public class ClientConnector {
     public boolean checkConnection(){
         try {
             socket = new Socket(serverIp, 8840);
+            name="server";
+            socket.close();
             return true;
         } catch (IOException e) {
             System.out.println("Game Server is down.");
@@ -43,7 +49,8 @@ public class ClientConnector {
             socket = new Socket(serverIp, 8840);
             name = DatabaseManager.dbm.tempNickname;
             
-            ClientReceiver clientReceiver = new ClientReceiver(socket,name);
+            clientReceiver = new ClientReceiver(socket,name);
+            //clientSender = new ClientSender(socket,name);
             ClientSender clientSender = new ClientSender(socket,name);
              
             clientReceiver.start();
@@ -51,5 +58,6 @@ public class ClientConnector {
         } catch (IOException e) {
         }
     }
+    
     
 }
