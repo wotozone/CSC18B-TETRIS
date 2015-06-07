@@ -25,18 +25,21 @@ public class DatabaseManager {
     final static String GAME_STATUS_FULL ="SELECT internal_id, blockstate, new_state, combo, attack, knockdown, in_game, room_id, enemy_internal_id FROM entity_game_status";
     final static String CHAT_FULL ="SELECT internal_id, chat_id, manager, chat_text, latency, chat_update FROM entity_chat";
     final static String ROOM_FULL ="SELECT room_id, player1_id, player2_id, timer FROM entity_room";
+    final static String SERVER_FULL ="SELECT server_id, ip_address, port FROM entity_server";
     
     final static String ACCOUNT_META =" FROM entity_account";
     final static String ACCOUNT_STATUS_META =" FROM entity_account_status";
     final static String GAME_STATUS_META =" FROM entity_game_status";
     final static String CHAT_META =" FROM entity_chat";
     final static String ROOM_META =" FROM entity_room";
+    final static String SERVER_META =" FROM entity_server";
     
     final static String ACCOUNT_NAME ="entity_account";
     final static String ACCOUNT_STATUS_NAME ="entity_account_status";
     final static String GAME_STATUS_NAME ="entity_game_status";
     final static String CHAT_NAME ="entity_chat";
     final static String ROOM_NAME ="entity_room";
+    final static String SERVER_NAME ="entity_server";
     
     final static String ENUM_LEVEL ="SELECT enum_level_id, description FROM entity_room";
     
@@ -102,6 +105,11 @@ public class DatabaseManager {
     //public boolean in_game;
     public int timer;
     
+    //Data for server
+    //public int internal_id;
+    public int server_id;
+    public String ip_address;
+    public int port;
     
     public DatabaseManager(){//Initialize data
         /*
@@ -335,6 +343,13 @@ public class DatabaseManager {
                 case 5:timer=(int) data;break;
                 default:break;
             }
+        }else if(str==SERVER_FULL||str==SERVER_META){
+            switch(column){
+                case 1:server_id=(int) data;break;
+                case 2:ip_address=(String) data;break;
+                case 3:port=(int) data;break;
+                default:break;
+            }
         }
     }
     
@@ -436,6 +451,8 @@ public class DatabaseManager {
                 return CHAT_NAME;
             case 5:
                 return ROOM_NAME;
+            case 6:
+                return SERVER_NAME;
             default:
                 return null;
         }
@@ -447,6 +464,7 @@ public class DatabaseManager {
         else if(meta.equalsIgnoreCase("game status"))return GAME_STATUS_NAME;
         else if(meta.equalsIgnoreCase("chat"))return CHAT_NAME;
         else if(meta.equalsIgnoreCase("room"))return ROOM_NAME;
+        else if(meta.equalsIgnoreCase("server"))return SERVER_NAME;
         return null;
     }
     
@@ -462,6 +480,8 @@ public class DatabaseManager {
                 return CHAT_META;
             case 5:
                 return ROOM_META;
+            case 6:
+                return SERVER_META;
             default:
                 return null;
         }
@@ -473,6 +493,7 @@ public class DatabaseManager {
         else if(meta.equalsIgnoreCase("game status"))return GAME_STATUS_META;
         else if(meta.equalsIgnoreCase("chat"))return CHAT_META;
         else if(meta.equalsIgnoreCase("room"))return ROOM_META;
+        else if(meta.equalsIgnoreCase("server"))return SERVER_META;
         return null;
     }
     private String getMetaData(int meta){
@@ -487,6 +508,8 @@ public class DatabaseManager {
                 return CHAT_FULL;
             case 5:
                 return ROOM_FULL;
+            case 6:
+                return SERVER_FULL;
             default:
                 return null;
         }
@@ -545,6 +568,13 @@ public class DatabaseManager {
         player2_id=0;
         //public boolean in_game;
         timer=0;
+        
+        
+        //Data for server
+        //public int internal_id;
+        server_id=0;
+        ip_address="127.0.0.1";
+        port=8840;
     }
     
     public void clearData(int meta){
@@ -612,6 +642,12 @@ public class DatabaseManager {
                 //Data for enum_level
                 enum_level_id=0;
                 levelDescription="";
+                break;
+            
+            case 7:
+                server_id=0;
+                ip_address="127.0.0.1";
+                port=8840;
                 break;
                 
             default:
