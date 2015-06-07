@@ -35,6 +35,7 @@ public class ClientReceiver extends Thread {
                 RoomScreen1.rs.receiveChat(input.readUTF());
             } catch (IOException e) {
                 RoomScreen1.rs.receiveChat("Server connection error(#0002)");
+                break;
             }
         }
     }

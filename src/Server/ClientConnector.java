@@ -25,11 +25,11 @@ public class ClientConnector {
     
     public String name;
     public Socket socket;
-    public String serverIp = "127.0.0.1";
+    public String serverIp = "71.95.58.77";
     public boolean first=true;
     
     public ClientConnector(){
-        serverIp = "127.0.0.1";
+        serverIp = "71.95.58.77";
     }
     
     public boolean checkConnection(){
