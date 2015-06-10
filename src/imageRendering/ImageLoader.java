@@ -22,9 +22,20 @@ public class ImageLoader{
     public final BufferedImage NEXTBLOCK_FRAME;
     public final BufferedImage HOLDBLOCK_FRAME;
     public final BufferedImage SCOREBOX_FRAME;
+    public final BufferedImage TIMESTAMP_FRAME;
     
     //INTERFACES
     public final BufferedImage GAME_OVER;
+    public final BufferedImage GAME_READY;
+    public final BufferedImage GAME_START;
+    public final BufferedImage VERSUS;
+    public final BufferedImage WINNER;
+    public final BufferedImage LOSER;
+    
+    //BUTTONS
+    public final BufferedImage GREEN_BUTTON;
+    public final BufferedImage RED_BUTTON;
+    public final BufferedImage GRAY_BUTTON;
     
     //BLOCKS
     public final BufferedImage RED_BLOCK;
@@ -70,6 +81,7 @@ public class ImageLoader{
         NEXTBLOCK_FRAME = ImageIO.read(new FileInputStream("Images/nextblock.jpg"));
         HOLDBLOCK_FRAME = ImageIO.read(new FileInputStream("Images/holdblock.jpg"));
         SCOREBOX_FRAME = ImageIO.read(new FileInputStream("Images/SCOREBOX.jpg"));
+        TIMESTAMP_FRAME = ImageIO.read(new FileInputStream("Images/timestamp.png"));
         
         //BLOCKS
         RED_BLOCK = ImageIO.read(new FileInputStream("Images/REDBLOCK.jpg"));
@@ -84,6 +96,16 @@ public class ImageLoader{
         
         //INTERFACES
         GAME_OVER = ImageIO.read(new FileInputStream("Images/GAMEOVER.png"));
+        GAME_READY = ImageIO.read(new FileInputStream("Images/readygame.png"));
+        GAME_START = ImageIO.read(new FileInputStream("Images/startgame.png"));
+        VERSUS = ImageIO.read(new FileInputStream("Images/VS.png"));
+        WINNER = ImageIO.read(new FileInputStream("Images/winner.png"));
+        LOSER = ImageIO.read(new FileInputStream("Images/loser.png"));
+        
+        //BUTTONS
+        RED_BUTTON = ImageIO.read(new FileInputStream("Images/redbutton_big.png"));
+        GREEN_BUTTON = ImageIO.read(new FileInputStream("Images/greenbutton_big.png"));
+        GRAY_BUTTON = ImageIO.read(new FileInputStream("Images/graybutton_big.png"));
         
         //NEXTBLOCKS
         STICK_BLOCK = ImageIO.read(new FileInputStream("Images/nextStick.png"));

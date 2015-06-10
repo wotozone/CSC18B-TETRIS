@@ -40,16 +40,36 @@ public class RoomScreen1 extends javax.swing.JFrame {
     
     private void gameStart(){
         new Initializer();
+        Initializer.multiplay=false;
+        Initializer.ready=true;
         Initializer.start=true;
         Initializer.end=false;
         Initializer.decDelay=0;
         Initializer.over=false;
-        game = new Thread(new Testing());
+        main = new Testing();
+        game = new Thread(main);
         game.start();
         setMenuVisible(false);
         soundManager.playLobyBackground(3);
     }
-
+    
+    private void multiplay(char roomNum){
+        new Initializer();
+        Initializer.multiplay=true;
+        Initializer.ready=false;
+        Initializer.enemyReady=false;
+        Initializer.start=true;
+        Initializer.end=false;
+        Initializer.decDelay=0;
+        Initializer.over=false;
+        Initializer.room=roomNum;
+        main = new Testing();
+        game = new Thread(main);
+        game.start();
+        setMenuVisible(false);
+        soundManager.playLobyBackground(3);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -85,6 +105,11 @@ public class RoomScreen1 extends javax.swing.JFrame {
         jPanel2.setLayout(null);
 
         jButton1.setText("Room 1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton1);
         jButton1.setBounds(20, 140, 150, 100);
 
@@ -216,19 +241,27 @@ public class RoomScreen1 extends javax.swing.JFrame {
         //dataSender.setChatText("\n   "+DatabaseManager.dbm.tempNickname+": "+evt.getActionCommand());
         //text.append("\n   "+DatabaseManager.dbm.tempNickname+": "+evt.getActionCommand());
         //ClientConnector.cc.clientSender.receiveText(evt.getActionCommand());
-        sendingText=evt.getActionCommand();
-        ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name);
-        ClientConnector.cc.clientSender.text=evt.getActionCommand();
+        ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name,ClientConnector.cc.nickname,'M','A','A');
+        ClientConnector.cc.clientSender.text=DatabaseManager.dbm.tempNickname+": "+evt.getActionCommand();
         ClientConnector.cc.clientSender.start();
         //ClientConnector.cc.clientSender.receive=true;
         //jTextArea1.setText(text.toString());
         jTextField1.setText("");
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        room='1';
+        ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name,ClientConnector.cc.nickname,'R','1','J');
+        ClientConnector.cc.clientSender.text="<"+DatabaseManager.dbm.internal_id+">"+"Request to join a room";
+        ClientConnector.cc.clientSender.start();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     //Custom variables
     
     public static RoomScreen1 rs = new RoomScreen1();
     
+    public Testing main;
     public ImageManager imageManager;
     public SoundManager soundManager;
     public DataSender dataSender;
@@ -237,6 +270,7 @@ public class RoomScreen1 extends javax.swing.JFrame {
     
     public boolean soundOn=true;
     
+    public char room='0';
     public int currentUser=0;
     
     public String version="Version 1.1.26";
@@ -247,6 +281,7 @@ public class RoomScreen1 extends javax.swing.JFrame {
     
     public Thread game;
     public Thread serverReceiver;
+    
     
     public void returnLobby(){
         setMenuVisible(true);
@@ -265,6 +300,18 @@ public class RoomScreen1 extends javax.swing.JFrame {
         //text.append(str);
         //DatabaseManager.dbm.chat_text=null;
         jTextArea1.setText(text.toString());
+    }
+    
+    public void failedToJoin(){
+        text.append("\n   "+"The room is full");
+        //text.append(str);
+        //DatabaseManager.dbm.chat_text=null;
+        jTextArea1.setText(text.toString());
+        room='0';
+    }
+    
+    public void JoinRoom(){
+        multiplay(room);
     }
     
     private void setMenuVisible(boolean visible){

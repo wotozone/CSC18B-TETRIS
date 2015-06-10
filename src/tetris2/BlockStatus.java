@@ -16,6 +16,8 @@ public class BlockStatus {
     
     public static BlockStatus[][] blocks = new BlockStatus[Initializer.BLOCK_NUM_WIDTH][Initializer.BLOCK_NUM_HEIGHT];
     
+    public static BlockStatus[][] enemyblocks = new BlockStatus[Initializer.BLOCK_NUM_WIDTH][Initializer.BLOCK_NUM_HEIGHT];
+    
     public void setBlockColor(int colorNum){
         blockColor=colorNum;
         //if(isBlock==false)isBlock=true;

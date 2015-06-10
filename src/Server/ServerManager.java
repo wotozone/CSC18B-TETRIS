@@ -61,7 +61,7 @@ public class ServerManager extends Thread {
     
     public HashMap<String, DataOutputStream> clients;
     public ServerSocket serverSocket;
-    
+    public ServerReceiver receiver;
     
     public ServerManager(){
         clients = new HashMap<String, DataOutputStream>();
@@ -80,7 +80,7 @@ public class ServerManager extends Thread {
             
             while(ServerScreen.ss.serverStatus){
                 socket = serverSocket.accept();
-                ServerReceiver receiver = new ServerReceiver(socket,clients);
+                receiver = new ServerReceiver(socket,clients);
                 receiver.start();
             }
             ServerScreen.ss.addText("Server is closed");

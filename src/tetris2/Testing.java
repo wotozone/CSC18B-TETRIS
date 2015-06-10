@@ -5,6 +5,9 @@
  */
 package tetris2;
 
+import Database.DatabaseManager;
+import Server.ClientConnector;
+import Server.ClientSender;
 import SoundPack.SoundManager;
 import SoundPack.test;
 import blockShape.BlockManager;
@@ -26,10 +29,6 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     
     public static final int BLOCK_SIZE_X=35;
     public static final int BLOCK_SIZE_Y=35;
-    //point where block start
-    public static final int BLOCK_START_X=225;
-    public static final int BLOCK_START_Y=75;
-    //#of blocks each
     
     //size of window
     public static final int WINDOW_WIDTH=900;
@@ -48,6 +47,9 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     private int timeDelay=0;
     //public int decDelay=0;
     
+    private boolean test=false;
+    private boolean frame=true;
+    
     private Timer dropDown;
 
 
@@ -57,21 +59,20 @@ public class Testing extends JFrame implements Runnable, KeyListener{
 
         this.addKeyListener(this);
         this.setSize(Initializer.WINDOW_WIDTH, Initializer.WINDOW_HEIGHT); 
-        this.setTitle("TETRIS");
+        this.setTitle("TETRIS COMBO");
         this.setResizable(false);  
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         if(LoginScreen.offline)this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);  
         this.setLocationRelativeTo(null);
 
-        Initializer.start=true;
+        Initializer.start=false;
         Initializer.end=false;
 
         //NextBlocks.setSpecificBlock(1, 6);
-        BlockManager.bm.setNextBlockToDisplay();
+        //BlockManager.bm.setNextBlockToDisplay();
         //SoundManager.sm.playBackground(0);
-        initTimer();
-        
+        if(Initializer.multiplay)test=true;
 
         fps = new FPSManager();
         try {
@@ -119,7 +120,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                     }
                     BlockManager.bm.soundOn=false;
                 }
-                if(Initializer.over){
+                if(Initializer.end){
                     dropDown.cancel();
                 }
             }
@@ -156,17 +157,19 @@ public class Testing extends JFrame implements Runnable, KeyListener{
     public void draw() {
 
         Graphics gs = bi.getGraphics();
-        if(init){
+        //if(init){
             gs.drawImage(imageManager.getBackgroundImage(), 0, 0, this);
             gs.drawImage(imageManager.getOutsideFrame(), Initializer.BLOCK_START_X-10, Initializer.BLOCK_START_Y-10, this);
             init=false;
+        //}
+        
+        if(frame){
+            fps.checkFrame();
+            fps.setFrame();
+            gs.fillRect(10, 40, 70, 15);
+            gs.setColor(Color.BLACK);
+            gs.drawString("FPS: "+fps.getFramePerSecond(), 20, 50);//Show Frame Per Second
         }
-
-        fps.checkFrame();
-        fps.setFrame();
-        gs.fillRect(10, 40, 70, 15);
-        gs.setColor(Color.BLACK);
-        gs.drawString("FPS: "+fps.getFramePerSecond(), 20, 50);//Show Frame Per Second
         
         //Main playground
         for(int i=1;i<Initializer.BLOCK_NUM_HEIGHT;i++){
@@ -178,15 +181,50 @@ public class Testing extends JFrame implements Runnable, KeyListener{
             }
         }
         
+        //multiplayer
+        if(test){
+            
+            //enemyblock
+            gs.drawImage(imageManager.getOutsideFrame(), Initializer.ENEMYBLOCK_START_X-10, Initializer.ENEMYBLOCK_START_Y-10, this);
+            for(int i=1;i<Initializer.BLOCK_NUM_HEIGHT;i++){
+                for(int k=0;k<Initializer.BLOCK_NUM_WIDTH;k++){
+                    gs.drawImage(imageManager.getBlockColorImage(BlockStatus.enemyblocks[k][i].getBlockColor()), 
+                                                                Initializer.ENEMYBLOCK_START_X+(k*Initializer.BLOCK_SIZE_X),
+                                                                Initializer.ENEMYBLOCK_START_Y+((i-1)*Initializer.BLOCK_SIZE_Y), this);
+                }
+            }
+            
+            //count
+            /*
+            gs.drawImage(imageManager.getButtonImage(0), Initializer.BLOCK_START_X+45,  Initializer.BLOCK_START_Y-67, this);
+            gs.drawImage(imageManager.getButtonImage(0), Initializer.BLOCK_START_X+115, Initializer.BLOCK_START_Y-67, this);
+            gs.drawImage(imageManager.getButtonImage(0), Initializer.BLOCK_START_X+185, Initializer.BLOCK_START_Y-67, this);
+            gs.drawImage(imageManager.getButtonImage(0), Initializer.BLOCK_START_X+255, Initializer.BLOCK_START_Y-67, this);
+            
+            gs.drawImage(imageManager.getButtonImage(0), Initializer.ENEMYBLOCK_START_X+45,  Initializer.BLOCK_START_Y-67, this);
+            gs.drawImage(imageManager.getButtonImage(0), Initializer.ENEMYBLOCK_START_X+115, Initializer.BLOCK_START_Y-67, this);
+            gs.drawImage(imageManager.getButtonImage(0), Initializer.ENEMYBLOCK_START_X+185, Initializer.BLOCK_START_Y-67, this);
+            gs.drawImage(imageManager.getButtonImage(0), Initializer.ENEMYBLOCK_START_X+255, Initializer.BLOCK_START_Y-67, this);
+            */
+            
+            //Timer
+            gs.drawImage(imageManager.getTimestampFrame(), Initializer.BLOCK_START_X+400, Initializer.BLOCK_START_Y, this);
+            
+            //Name
+            gs.drawImage(imageManager.getVersusImage(), Initializer.BLOCK_START_X+400, Initializer.BLOCK_START_Y-50, this);
+        }
+        
         
         //Score
-        gs.fillRect(400, 75, 250, 50);
-        gs.drawImage(imageManager.getScoreBoxFrame(), Initializer.BLOCK_START_X+375, Initializer.BLOCK_START_Y, this);
-        //gs.setColor(Color.BLACK);
-        //gs.drawString(String.valueOf(BlockManager.bm.score), 425, 100);
-        imageManager.setScoreImage(BlockManager.bm.score);
-        for(int i=0;i<8;i++){
-            if(imageManager.scoreImage[i]!=null)gs.drawImage(imageManager.scoreImage[i], 550-(i*20), 80, this);
+        if(!test){
+            gs.fillRect(400, 75, 250, 50);
+            gs.drawImage(imageManager.getScoreBoxFrame(), Initializer.BLOCK_START_X+375, Initializer.BLOCK_START_Y, this);
+            //gs.setColor(Color.BLACK);
+            //gs.drawString(String.valueOf(BlockManager.bm.score), 425, 100);
+            imageManager.setScoreImage(BlockManager.bm.score);
+            for(int i=0;i<8;i++){
+                if(imageManager.scoreImage[i]!=null)gs.drawImage(imageManager.scoreImage[i], Initializer.BLOCK_START_X+525-(i*20), Initializer.BLOCK_START_Y+5, this);
+            }
         }
         
         //Next blocks
@@ -205,7 +243,27 @@ public class Testing extends JFrame implements Runnable, KeyListener{
         if(Initializer.end){
             //gs.setColor(Color.WHITE);
             //gs.drawString("GAME OVER", 25+(35*4), 75+(35*10));//Show GAME OVER
-            gs.drawImage(imageManager.getGameOverImage(), 25, 425, this);
+            if(Initializer.multiplay){
+                if(Initializer.winner){
+                    gs.drawImage(imageManager.getWinnerImage(), Initializer.BLOCK_START_X, Initializer.BLOCK_START_Y+225, this);
+                }else{
+                    gs.drawImage(imageManager.getLoserImage(), Initializer.BLOCK_START_X, Initializer.BLOCK_START_Y+225, this);
+                }
+            }else{
+                gs.drawImage(imageManager.getGameOverImage(), Initializer.BLOCK_START_X, Initializer.BLOCK_START_Y+225, this);
+            }
+        }
+        
+        if(!Initializer.start&&Initializer.ready){
+            gs.drawImage(imageManager.getStartImage(),Initializer.BLOCK_START_X,Initializer.BLOCK_START_Y+325, this);
+        }
+        
+        if(!Initializer.start&&!Initializer.ready){
+            gs.drawImage(imageManager.getReadyImage(),Initializer.BLOCK_START_X,Initializer.BLOCK_START_Y+325, this);
+        }
+        
+        if(Initializer.multiplay&&Initializer.reset){
+            resetBlock();
         }
         
         Graphics ge = this.getGraphics();
@@ -229,6 +287,37 @@ public class Testing extends JFrame implements Runnable, KeyListener{
         }
     }
 
+    public void resetBlock(){
+        new Initializer();
+        Initializer.ready=false;
+        Initializer.start=true;
+        Initializer.end=false;
+        Initializer.reset=false;
+    }
+    
+    public void gameStart(){
+        if(!Initializer.start){
+            if(Initializer.multiplay){
+                new Initializer();
+                Initializer.ready=false;
+                Initializer.start=true;
+                Initializer.end=false;
+                Initializer.reset=false;
+                Initializer.decDelay=0;
+                BlockManager.bm.setNextBlockToDisplay();
+                initTimer();
+            }else{
+                new Initializer();
+                Initializer.ready=true;
+                Initializer.start=true;
+                Initializer.end=false;
+                Initializer.decDelay=0;
+                BlockManager.bm.setNextBlockToDisplay();
+                initTimer();
+            }
+        }
+    }
+    
     public void keyPressed(KeyEvent ke) {
         switch(ke.getKeyCode()){
             case KeyEvent.VK_LEFT:  
@@ -259,21 +348,53 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                 BlockManager.bm.holdBlock();
                 break;
             case KeyEvent.VK_ENTER:
-                if(Initializer.end){
-                    new Initializer();
-                    Initializer.start=true;
-                    Initializer.end=false;
-                    Initializer.decDelay=0;
-                    BlockManager.bm.setNextBlockToDisplay();
+                if(Initializer.multiplay){
+                    ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name,ClientConnector.cc.nickname,'R',Initializer.room,'S');
+                    ClientConnector.cc.clientSender.text="<"+DatabaseManager.dbm.internal_id+">"+"Request to start game";
+                    ClientConnector.cc.clientSender.start();
+                }else{
+                    gameStart();
                 }
                 break;
             case KeyEvent.VK_ESCAPE:
-                if(Initializer.end&&!LoginScreen.offline){
+                if(!Initializer.start&&!LoginScreen.offline){
+                    if(Initializer.multiplay){
+                        ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name,ClientConnector.cc.nickname,'R',Initializer.room,'Q');
+                        ClientConnector.cc.clientSender.text="<"+DatabaseManager.dbm.internal_id+">"+"Request to quit";
+                        ClientConnector.cc.clientSender.start();
+                    }
                     Initializer.over=true;
                     soundManager.stopBackground();
                     RoomScreen1.rs.returnLobby();
                     this.removeAll();
                     this.dispose();
+                }
+                break;
+            case KeyEvent.VK_T:
+                if(test)test=false;
+                else test=true;
+                init=false;
+                break;
+            case KeyEvent.VK_F:
+                if(frame)frame=false;
+                else frame=true;
+                break;
+            case KeyEvent.VK_R:
+                if(Initializer.multiplay){
+                    if(!Initializer.ready){
+                        Initializer.ready=true;
+                        Initializer.end=false;
+                        ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name,ClientConnector.cc.nickname,'R',Initializer.room,'R');
+                        ClientConnector.cc.clientSender.text="<"+DatabaseManager.dbm.internal_id+">"+"ready";
+                        ClientConnector.cc.clientSender.start();
+                        System.out.println("ready");
+                    }else{
+                        Initializer.ready=false;
+                        Initializer.end=false;
+                        ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name,ClientConnector.cc.nickname,'R',Initializer.room,'B');
+                        ClientConnector.cc.clientSender.text="<"+DatabaseManager.dbm.internal_id+">"+"ready";
+                        ClientConnector.cc.clientSender.start();
+                    }
                 }
                 break;
             } 

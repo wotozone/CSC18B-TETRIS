@@ -24,7 +24,7 @@ public class DatabaseManager {
     final static String ACCOUNT_STATUS_FULL ="SELECT internal_id, game_played, game_win, high_score, level, experience FROM entity_account_status";
     final static String GAME_STATUS_FULL ="SELECT internal_id, blockstate, new_state, combo, attack, knockdown, in_game, room_id, enemy_internal_id FROM entity_game_status";
     final static String CHAT_FULL ="SELECT internal_id, chat_id, manager, chat_text, latency, chat_update FROM entity_chat";
-    final static String ROOM_FULL ="SELECT room_id, player1_id, player2_id, timer FROM entity_room";
+    final static String ROOM_FULL ="SELECT room_id, player1_id, player2_id, playing FROM entity_room";
     final static String SERVER_FULL ="SELECT server_id, ip_address, port FROM entity_server";
     
     final static String ACCOUNT_META =" FROM entity_account";
@@ -103,7 +103,7 @@ public class DatabaseManager {
     public int player1_id;
     public int player2_id;
     //public boolean in_game;
-    public int timer;
+    public boolean playing;
     
     //Data for server
     //public int internal_id;
@@ -267,6 +267,35 @@ public class DatabaseManager {
     }
     
     
+    public void loadRoomData(int roomNum){
+        
+        try(
+                Connection connection = DriverManager.getConnection(server_url, server_username, server_password);
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(ROOM_FULL))
+        {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int numberOfColumns = metaData.getColumnCount();
+            
+            System.out.printf("Database Loaded%n%n");
+            
+            for(int i = 1; i <= numberOfColumns; i++){
+                System.out.printf("%-8s\t", metaData.getColumnName(i));
+            }
+            System.out.println();
+            
+            while(resultSet.next()){
+                for(int i = 1; i <= numberOfColumns; i++){
+                    System.out.printf("%-8s\t", resultSet.getObject(i));
+                    if(roomNum==(int) resultSet.getObject(1))getData(ROOM_FULL,i,resultSet.getObject(i));
+                }
+                System.out.println();
+            }
+            
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
     
     private void loadData(String str){
         
@@ -289,6 +318,36 @@ public class DatabaseManager {
                 for(int i = 1; i <= numberOfColumns; i++){
                     System.out.printf("%-8s\t", resultSet.getObject(i));
                     if(internal_id==(int) resultSet.getObject(1))getData(str,i,resultSet.getObject(i));
+                }
+                System.out.println();
+            }
+            
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
+    
+    public void loadData(int id,String str){
+        
+        try(
+                Connection connection = DriverManager.getConnection(server_url, server_username, server_password);
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(getMetaData(str)))
+        {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int numberOfColumns = metaData.getColumnCount();
+            
+            System.out.printf("Database Loaded%n%n");
+            
+            for(int i = 1; i <= numberOfColumns; i++){
+                System.out.printf("%-8s\t", metaData.getColumnName(i));
+            }
+            System.out.println();
+            
+            while(resultSet.next()){
+                for(int i = 1; i <= numberOfColumns; i++){
+                    System.out.printf("%-8s\t", resultSet.getObject(i));
+                    if(id==((int) resultSet.getObject(1)))getData(str,i,resultSet.getObject(i));
                 }
                 System.out.println();
             }
@@ -338,9 +397,9 @@ public class DatabaseManager {
         }else if(str==ROOM_FULL||str==ROOM_META){
             switch(column){
                 case 1:room_id=(int) data;break;
-                case 3:player1_id=(int) data;break;
-                case 4:player2_id=(int) data;break;
-                case 5:timer=(int) data;break;
+                case 2:player1_id=(int) data;break;
+                case 3:player2_id=(int) data;break;
+                case 4:playing=(boolean) data;break;
                 default:break;
             }
         }else if(str==SERVER_FULL||str==SERVER_META){
@@ -370,6 +429,25 @@ public class DatabaseManager {
     
     
     
+    public void saveRoomData(String roomNum,String metatype,String value){
+        System.out.println(ACCOUNT_FULL);
+        try(
+                Connection connection = DriverManager.getConnection(server_url, server_username, server_password);
+                Statement statement = connection.createStatement())
+        {
+            System.out.printf("Database Loaded: "+ROOM_META+" - ");
+            System.out.println("update "+metatype+" as "+value);
+            
+            System.out.println("UPDATE "+ROOM_NAME+" set "+metatype+"="+value+" where room_id="+ roomNum);
+            if(statement.executeUpdate("UPDATE "+ROOM_NAME+" set "+metatype+"="+value+" where room_id="+ roomNum)==0){
+                System.out.println("Unable to update data");
+            }else{
+                System.out.println("Successfuly updated");
+            }
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
     
     public void saveData(String id,String metatype,String datatype,String value){
         System.out.println("SELECT "+datatype+getPartMetaData(datatype));
@@ -514,6 +592,15 @@ public class DatabaseManager {
                 return null;
         }
     }
+    private String getMetaData(String meta){
+        if(meta.equalsIgnoreCase("account"))return ACCOUNT_FULL;
+        else if(meta.equalsIgnoreCase("account status"))return ACCOUNT_STATUS_FULL;
+        else if(meta.equalsIgnoreCase("game status"))return GAME_STATUS_FULL;
+        else if(meta.equalsIgnoreCase("chat"))return CHAT_FULL;
+        else if(meta.equalsIgnoreCase("room"))return ROOM_FULL;
+        else if(meta.equalsIgnoreCase("server"))return SERVER_FULL;
+        return null;
+    }
     
     
     public void clearData(){
@@ -567,7 +654,7 @@ public class DatabaseManager {
         player1_id=0;
         player2_id=0;
         //public boolean in_game;
-        timer=0;
+        playing=false;
         
         
         //Data for server
@@ -635,7 +722,7 @@ public class DatabaseManager {
                 player1_id=0;
                 player2_id=0;
                 //public boolean in_game;
-                timer=0;
+                playing=false;
                 break;
                 
             case 6:

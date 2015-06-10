@@ -93,6 +93,15 @@ public class ImageManager{
         return null;
     }
     
+    public BufferedImage getButtonImage(int value){
+        switch(value){
+            case 0: return imageLoader.GRAY_BUTTON;
+            case 1: return imageLoader.GREEN_BUTTON;
+            case 2: return imageLoader.RED_BUTTON;
+            default: return imageLoader.ERROR_BLOCK;
+        }
+    }
+    
     public BufferedImage getBlockColorImage(int value){
         switch(value){
             case(0):return imageLoader.SKY_BLOCK;
@@ -131,9 +140,33 @@ public class ImageManager{
     public BufferedImage getScoreBoxFrame(){
         return imageLoader.SCOREBOX_FRAME;
     }
+        
+    public BufferedImage getVersusImage(){
+        return imageLoader.VERSUS;
+    }
+    
+    public BufferedImage getWinnerImage(){
+        return imageLoader.WINNER;
+    }
+    
+    public BufferedImage getLoserImage(){
+        return imageLoader.LOSER;
+    }
+        
+    public BufferedImage getTimestampFrame(){
+        return imageLoader.TIMESTAMP_FRAME;
+    }
     
     public BufferedImage getGameOverImage(){
         return imageLoader.GAME_OVER;
+    }
+    
+    public BufferedImage getReadyImage(){
+        return imageLoader.GAME_READY;
+    }
+    
+    public BufferedImage getStartImage(){
+        return imageLoader.GAME_START;
     }
     
     public BufferedImage getNumberImage(int num){

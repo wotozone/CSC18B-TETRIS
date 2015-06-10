@@ -18,14 +18,23 @@ import tetris2.RoomScreen1;
  * @author Tae
  */
 public class ClientSender extends Thread {
+    
     private Socket socket;
     private DataOutputStream output;
     private String name;
+    private String nickname;
     public String text="";
+    public char type;
+    public char channel;
+    public char command;
     
-    public ClientSender(Socket socket,String name) {
+    public ClientSender(Socket socket,String name,String nickname,char type,char channel,char command) {
         this.name = name;
         this.socket = socket;
+        this.nickname=nickname;
+        this.type=type;
+        this.channel=channel;
+        this.command=command;
         try {
             output = new DataOutputStream(socket.getOutputStream());
             if(ClientConnector.cc.first)output.writeUTF(name);
@@ -46,7 +55,7 @@ public class ClientSender extends Thread {
             try {
                 //text=RoomScreen1.rs.sendingText;
                 System.out.println(text);
-                output.writeUTF(name+ ": " + text); 
+                output.writeUTF("["+type+channel+command+"]"+text); 
             } catch (IOException e) {
                 
             }

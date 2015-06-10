@@ -6,6 +6,8 @@
 package blockShape;
 
 import Database.DatabaseManager;
+import Server.ClientConnector;
+import Server.ClientSender;
 import SoundPack.SoundManager;
 import tetris2.BlockStatus;
 import tetris2.Initializer;
@@ -187,8 +189,14 @@ public class BlockManager {
         if(!checkInitPath()){//game over
             if(LoginScreen.offline){
                 
-            }else if(DatabaseManager.dbm.highScore<score)
-            DatabaseManager.dbm.saveData(Integer.toString(DatabaseManager.dbm.internal_id), "high_score", "account status", Integer.toString(score));
+            }else if(DatabaseManager.dbm.highScore<score){
+                DatabaseManager.dbm.saveData(Integer.toString(DatabaseManager.dbm.internal_id), "high_score", "account status", Integer.toString(score));
+            }
+            if(Initializer.multiplay){
+                ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name,ClientConnector.cc.nickname,'R',Initializer.room,'L');
+                ClientConnector.cc.clientSender.text="<"+DatabaseManager.dbm.internal_id+">"+"I lose";
+                ClientConnector.cc.clientSender.start();
+            }
             Initializer.start=false;
             Initializer.end=true;
         }
@@ -298,6 +306,7 @@ public class BlockManager {
                 soundType=combo;
             }
             score+=(500*blockClear*combo);
+            Initializer.myScore=score;
         }else{
             if(combo!=0){
                 endComboBonus();
