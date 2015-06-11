@@ -13,6 +13,7 @@ import tetris2.BlockStatus;
 import tetris2.Initializer;
 import tetris2.LoginScreen;
 import tetris2.NextBlocks;
+import tetris2.RoomScreen1;
 
 /**
  *
@@ -274,7 +275,23 @@ public class BlockManager {
     
     private void loadNextBlock(){
         isBlockFilled();
+        if(Initializer.multiplay){
+            Initializer.renewBlock=true;
+            ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name,ClientConnector.cc.nickname,'R',Initializer.room,'E');
+            ClientConnector.cc.clientSender.text="<"+DatabaseManager.dbm.internal_id+">"+BlockToString();
+            ClientConnector.cc.clientSender.start();
+        }
         setNextBlockToDisplay();
+    }
+    
+    private String BlockToString(){
+        StringBuffer str = new StringBuffer();
+        for(int i=1;i<21;i++){
+            for(int j=0;j<10;j++){
+                str.append(BlockStatus.blocks[j][i].getBlockColor());
+            }
+        }
+        return str.toString();
     }
     
     private void isBlockFilled(){

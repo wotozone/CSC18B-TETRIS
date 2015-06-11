@@ -75,12 +75,12 @@ public class ImageLoader{
     
     public ImageLoader() throws Exception{
         //FRAMES
-        BACKGROUND = ImageIO.read(new FileInputStream("Images/BACKGROUND.jpg"));
+        BACKGROUND = ImageIO.read(new FileInputStream("Images/background.png"));
         LOBBY_BACKGROUND = ImageIO.read(new FileInputStream("Images/Lobby_Background2.jpg"));
-        OUTSIDE_FRAME = ImageIO.read(new FileInputStream("Images/OUTSIDEFRAME.jpg"));
-        NEXTBLOCK_FRAME = ImageIO.read(new FileInputStream("Images/nextblock.jpg"));
-        HOLDBLOCK_FRAME = ImageIO.read(new FileInputStream("Images/holdblock.jpg"));
-        SCOREBOX_FRAME = ImageIO.read(new FileInputStream("Images/SCOREBOX.jpg"));
+        OUTSIDE_FRAME = ImageIO.read(new FileInputStream("Images/outsideframe.png"));
+        NEXTBLOCK_FRAME = ImageIO.read(new FileInputStream("Images/nextblock2.png"));
+        HOLDBLOCK_FRAME = ImageIO.read(new FileInputStream("Images/holdblock2.png"));
+        SCOREBOX_FRAME = ImageIO.read(new FileInputStream("Images/scorebox3.png"));
         TIMESTAMP_FRAME = ImageIO.read(new FileInputStream("Images/timestamp.png"));
         
         //BLOCKS

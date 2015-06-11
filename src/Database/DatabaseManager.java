@@ -347,7 +347,9 @@ public class DatabaseManager {
             while(resultSet.next()){
                 for(int i = 1; i <= numberOfColumns; i++){
                     System.out.printf("%-8s\t", resultSet.getObject(i));
-                    if(id==((int) resultSet.getObject(1)))getData(str,i,resultSet.getObject(i));
+                    if(id==((int) resultSet.getObject(1))){
+                        getData(getMetaData(str),i,resultSet.getObject(i));
+                    }
                 }
                 System.out.println();
             }

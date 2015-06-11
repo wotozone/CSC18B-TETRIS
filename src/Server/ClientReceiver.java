@@ -9,6 +9,7 @@ import Database.DatabaseManager;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
+import tetris2.BlockStatus;
 import tetris2.Initializer;
 import tetris2.RoomScreen1;
 
@@ -34,6 +35,19 @@ public class ClientReceiver extends Thread {
         }
     }
 
+    private int charToInt(char num){
+        if(num=='0')return 0;
+        else if(num=='1')return 1;
+        else if(num=='2')return 2;
+        else if(num=='3')return 3;
+        else if(num=='4')return 4;
+        else if(num=='5')return 5;
+        else if(num=='6')return 6;
+        else if(num=='7')return 7;
+        else if(num=='8')return 8;
+        return 0;
+    }
+    
     @Override
     public void run() {
         while (input != null) {
@@ -69,9 +83,20 @@ public class ClientReceiver extends Thread {
                     }else if(command=='L'){
                         Initializer.start=false;
                         Initializer.end=true;
+                        Initializer.winner=false;
                     }else if(command=='W'){
                         Initializer.start=false;
                         Initializer.end=true;
+                        Initializer.winner=true;
+                    }else if(command=='E'){
+                        text=text.substring(5);
+                        StringBuffer str = new StringBuffer();
+                        str.append(text);
+                        for(int i=1;i<21;i++){
+                            for(int j=0;j<10;j++){
+                                BlockStatus.enemyblocks[j][i].setBlockColor(charToInt(str.charAt( ((i*10)-10) + j)));
+                            }
+                        }
                     }
                 }
                 

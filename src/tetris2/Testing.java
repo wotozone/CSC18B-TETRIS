@@ -208,16 +208,16 @@ public class Testing extends JFrame implements Runnable, KeyListener{
             */
             
             //Timer
-            gs.drawImage(imageManager.getTimestampFrame(), Initializer.BLOCK_START_X+400, Initializer.BLOCK_START_Y, this);
+            //gs.drawImage(imageManager.getTimestampFrame(), Initializer.BLOCK_START_X+400, Initializer.BLOCK_START_Y, this);
             
             //Name
-            gs.drawImage(imageManager.getVersusImage(), Initializer.BLOCK_START_X+400, Initializer.BLOCK_START_Y-50, this);
+            //gs.drawImage(imageManager.getVersusImage(), Initializer.BLOCK_START_X+400, Initializer.BLOCK_START_Y-50, this);
         }
         
         
         //Score
         if(!test){
-            gs.fillRect(400, 75, 250, 50);
+            //gs.fillRect(400, 75, 250, 50);
             gs.drawImage(imageManager.getScoreBoxFrame(), Initializer.BLOCK_START_X+375, Initializer.BLOCK_START_Y, this);
             //gs.setColor(Color.BLACK);
             //gs.drawString(String.valueOf(BlockManager.bm.score), 425, 100);
@@ -299,6 +299,7 @@ public class Testing extends JFrame implements Runnable, KeyListener{
         if(!Initializer.start){
             if(Initializer.multiplay){
                 new Initializer();
+                Initializer.enemyReady=false;
                 Initializer.ready=false;
                 Initializer.start=true;
                 Initializer.end=false;
@@ -349,9 +350,11 @@ public class Testing extends JFrame implements Runnable, KeyListener{
                 break;
             case KeyEvent.VK_ENTER:
                 if(Initializer.multiplay){
-                    ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name,ClientConnector.cc.nickname,'R',Initializer.room,'S');
-                    ClientConnector.cc.clientSender.text="<"+DatabaseManager.dbm.internal_id+">"+"Request to start game";
-                    ClientConnector.cc.clientSender.start();
+                    if(Initializer.ready&&Initializer.enemyReady){
+                        ClientConnector.cc.clientSender = new ClientSender(ClientConnector.cc.socket,ClientConnector.cc.name,ClientConnector.cc.nickname,'R',Initializer.room,'S');
+                        ClientConnector.cc.clientSender.text="<"+DatabaseManager.dbm.internal_id+">"+"Request to start game";
+                        ClientConnector.cc.clientSender.start();
+                    }
                 }else{
                     gameStart();
                 }

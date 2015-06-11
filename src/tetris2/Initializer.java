@@ -58,7 +58,7 @@ public class Initializer {
     public static boolean reset = false;
     public static boolean winner = true;
     public static boolean enemyReady = false;
-    
+    public static boolean renewBlock=false;
     
     public static int decDelay=0;
     
@@ -72,6 +72,7 @@ public class Initializer {
     }
     
     private void initData(){
+        renewBlock=false;
         myStack=0;
         myKnockdown=0;
         myScore=0;

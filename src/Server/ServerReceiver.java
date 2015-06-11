@@ -60,6 +60,7 @@ public class ServerReceiver extends Thread {
                 [O] - Timeout
                 [W] - win
                 [N] - renew score
+                [E] - renew block
     */
     
     
@@ -93,9 +94,15 @@ public class ServerReceiver extends Thread {
         try {
             //Notice
             name = input.readUTF();
-            if(!name.isEmpty())sendToAll("[MAA]"+ name + " joined.");
             
             clients.put(name, output);
+            if(!name.isEmpty()){
+                
+                DatabaseManager.dbm.loadData(Integer.parseInt(name), "account");
+                sendToAll("[MAA]"+DatabaseManager.dbm.nickname + " joined.");
+                //DatabaseManager.dbm.clearData(1);
+            }
+            
             
             
             ServerScreen.ss.addText(name + "[" + socket.getInetAddress() + ":"
@@ -197,6 +204,15 @@ public class ServerReceiver extends Thread {
                             ServerScreen.ss.addText(appliedData+" lose the game in room "+Character.toString(channel),3);
                             makeDecision(Integer.toString(DatabaseManager.dbm.player1_id),Integer.toString(DatabaseManager.dbm.player2_id),channel);
                         }
+                    }else if(command=='E'){//renew block
+                        data=data.substring(data.indexOf(">")+1);
+                        if(Integer.toString(DatabaseManager.dbm.player1_id).equalsIgnoreCase(appliedData)){
+                            System.out.println(data);
+                            sendToUser(Integer.toString(DatabaseManager.dbm.player2_id),"[R"+channel+"E]"+data);
+                        }else if(Integer.toString(DatabaseManager.dbm.player2_id).equalsIgnoreCase(appliedData)){
+                            System.out.println(data);
+                            sendToUser(Integer.toString(DatabaseManager.dbm.player1_id),"[R"+channel+"E]"+data);
+                        }
                     }
                     DatabaseManager.dbm.clearData(5);
                 }
@@ -205,7 +221,11 @@ public class ServerReceiver extends Thread {
         } finally {
             //connection end
             clients.remove(name);
-            if(!name.isEmpty())sendToAll("[MAA]"+ name + " left.");
+            if(!name.isEmpty()){
+                DatabaseManager.dbm.loadData(Integer.parseInt(name), "account");
+                sendToAll("[MAA]"+ DatabaseManager.dbm.nickname + " left.");
+                //DatabaseManager.dbm.clearData(1);
+            }
             //DatabaseManager.dbm.clearData(3);
             //DatabaseManager.dbm.loadData(name, "game status");
             ServerScreen.ss.addText(name + "[" + socket.getInetAddress() + ":"
