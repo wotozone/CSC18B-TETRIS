@@ -8,3 +8,5 @@ Server needs to be on in order to play online game.
 
 Only server needs to open port, and once the server is live, clients can access to the sever and make a room to play a game.
 In multiplay-mode, lobby supports chat, so clients can communicate each other
+
+To open up the server, user must have database is on. In this project, I used apache and mysql to build up the database.
